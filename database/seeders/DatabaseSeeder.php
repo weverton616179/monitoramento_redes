@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Historicoportas;
+use App\Models\Historico;
 use App\Models\User;
 use App\Models\Host;
+use App\Models\Porta;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,7 +17,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Host::factory(1)->create();
+        Host::factory(3)->create();
+        User::factory(3)->create();
+        Porta::factory(3)->create();
+        Historico::factory(3)->create();
+        Historicoportas::factory(3)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',

@@ -10,7 +10,20 @@ class Host extends Model
 {
     use HasFactory, Notifiable;
 
-    public function user(){
-        return $this->belongsTo(User::class, 'id_user');
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_host');
+    }
+
+    public function historicos() {
+        return $this->hasMany(Historico::class);
+    }
+
+    public function historico_recente() {
+        return $this->historicos()->orderBy('created_at', 'desc')->first();
+    }
+
+    public function portas() {
+        return $this->hasMany(Porta::class);
     }
 }

@@ -46,7 +46,10 @@ class User extends Authenticatable
         ];
     }
 
-    public function host() {
-        return $this->hasMany(Host::class);
+    public function hosts()
+    {
+        return $this->belongsToMany(Host::class, 'user_host');
     }
+
+    
 }

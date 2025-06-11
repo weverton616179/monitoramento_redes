@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 
-class Porta extends Model
+class Historicoportas extends Model
 {
     use HasFactory, Notifiable;
 
-    public function host()
+    public function historico()
     {
-        return $this->belongsTo(Host::class);
+        return $this->belongsTo(Historico::class);
     }
 }

@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Host>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Porta>
  */
-class HostFactory extends Factory
+class PortaFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,8 +18,9 @@ class HostFactory extends Factory
     {
         return [
             'nome' => fake()->name(),
-            'ip' => fake()->name(),
+            'porta' => fake()->name(),
             'ativa' => true,
+            'host_id' => 1,
         ];
     }
 }

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Models\Host;
 
 class HostController extends Controller
 {
     function index(Request $request){
-        return view("site.home");
+        $hosts = Host::all();
+
+        return view("site.home", compact("hosts"));
     }
 }

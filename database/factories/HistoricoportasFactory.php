@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Host>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Historicoportas>
  */
-class HostFactory extends Factory
+class HistoricoportasFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +17,9 @@ class HostFactory extends Factory
     public function definition(): array
     {
         return [
-            'nome' => fake()->name(),
-            'ip' => fake()->name(),
-            'ativa' => true,
+            'status' => true,
+            'historico_id' => 1,
+            'porta_id' => 1,
         ];
     }
 }

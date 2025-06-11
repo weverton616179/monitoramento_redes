@@ -15,10 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('ip');
+            $table->boolean('ativa');
 
-            $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')->references('id')->on('users');
-            
             $table->timestamps();
         });
     }
