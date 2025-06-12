@@ -14,4 +14,9 @@ class Historicoportas extends Model
     {
         return $this->belongsTo(Historico::class);
     }
+
+    public function porta()
+    {
+        return $this->belongsTo(Porta::class);
+    }
 }

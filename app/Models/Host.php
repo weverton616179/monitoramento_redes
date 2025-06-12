@@ -10,17 +10,23 @@ class Host extends Model
 {
     use HasFactory, Notifiable;
 
+    protected $fillable = [
+        'nome',
+        'ip',
+        'ativa',
+    ];
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_host');
     }
 
     public function historicos() {
-        return $this->hasMany(Historico::class);
+        return $this->hasMany(Historico::class)->orderBy('created_at', 'desc');
     }
 
     public function historico_recente() {
-        return $this->historicos()->orderBy('created_at', 'desc')->first();
+        // return $this->historicos()->orderBy('created_at', 'desc')->first();
     }
 
     public function portas() {

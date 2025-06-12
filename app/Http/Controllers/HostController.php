@@ -7,9 +7,33 @@ use \App\Models\Host;
 
 class HostController extends Controller
 {
-    function index(Request $request){
-        $hosts = Host::all();
+    public function index(Request $request){
 
-        return view("site.home", compact("hosts"));
+        $hosts_nm = Host::where('ativa', false)->get();
+
+        $hosts_at = Host::where('ativa', true)->with('historicos')->get()->filter(function ($host) {
+            return $host->historicos->first() && $host->historicos->first()->status == 'ATIVO';
+        });
+
+        $hosts_pr = Host::where('ativa', true)->with('historicos')->get()->filter(function ($host) {
+            return $host->historicos->first() && $host->historicos->first()->status == 'PROBLEMA';
+        });
+
+        $hosts_sh = Host::where('ativa', true)->doesntHave('historicos')->get();
+
+        return view("site.painel", compact("hosts_at", "hosts_pr", "hosts_nm", "hosts_sh"));
+    }
+
+    public function store(Request $request) {
+        $host = $request->all();
+        $ativa = $request->has('ativa') ? true : false;
+        $host['ativa'] = $ativa;
+        Host::create($host);
+        return redirect()->route('site.painel');
+    }
+
+    public function adicionar(Request $request) {
+        
+        return view("site.adicionar");
     }
 }

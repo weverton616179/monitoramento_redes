@@ -14,4 +14,8 @@ class Porta extends Model
     {
         return $this->belongsTo(Host::class);
     }
+
+    public function historicoportas() {
+        return $this->hasMany(Historicoportas::class)->orderBy('created_at', 'desc');
+    }
 }

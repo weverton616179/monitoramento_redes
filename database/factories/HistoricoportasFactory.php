@@ -18,8 +18,8 @@ class HistoricoportasFactory extends Factory
     {
         return [
             'status' => true,
-            'historico_id' => 1,
-            'porta_id' => 1,
+            'historico_id' => 2,
+            'porta_id' => 2,
         ];
     }
 }

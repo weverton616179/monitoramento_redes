@@ -18,12 +18,12 @@ class HistoricoFactory extends Factory
     {
         return [
             'status' => fake()->name(),
-            'pk_loss' => 0,
-            'tr_min' => 2,
-            'tr_max' => 2,
-            'tr_med' => 2,
+            'pk_loss' => 1,
+            'tr_min' => 3,
+            'tr_max' => 3,
+            'tr_med' => 3,
 
-            'host_id' => 1,
+            'host_id' => 2,
         ];
     }
 }
