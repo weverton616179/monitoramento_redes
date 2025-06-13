@@ -10,6 +10,13 @@ class Porta extends Model
 {
     use HasFactory, Notifiable;
 
+    protected $fillable = [
+        'nome',
+        'host_id',
+        'ativa',
+        'porta',
+    ];
+
     public function host()
     {
         return $this->belongsTo(Host::class);

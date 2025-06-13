@@ -26,7 +26,8 @@
         
         <div>
             <a href="" class="p-1">configurações</a>
-            <a href="{{route('site.adicionar')}}" class="p-1">adicionar</a>
+            <a href="{{route('site.porta')}}" class="p-1">adicionar porta</a>
+            <a href="{{route('site.adicionar')}}" class="p-1">adicionar host</a>
             <a href="" class="p-1">login</a>
         </div>
     </header>
@@ -86,8 +87,8 @@
                 <div class="pl-2 pt-2">
                     <h1 class="font-semibold">PORTAS</h1>
                     <div class="flex">
-                        @foreach ($historico_portas as $hporta)
-                            <?php $porta = $hporta->porta->where('id', $hporta->porta_id)->first()?>
+                        @foreach ($host->portas as $porta)
+                            <?php $hporta = $porta->historicoportas->first()?>
 
                             @if ($porta->ativa)
 

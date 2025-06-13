@@ -18,4 +18,9 @@ class Historico extends Model
     public function historicoportas() {
         return $this->hasMany(Historicoportas::class);
     }
+
+    public function gravarhistorico() {
+        $historico = new Historico();
+        
+    }
 }
