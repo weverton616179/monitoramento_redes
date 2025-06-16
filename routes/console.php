@@ -73,10 +73,10 @@ Schedule::call(function () {
                     $historico_porta->historico_id = $historico->id;
 
                     $socket = @fsockopen($ip, $porta_num, $errno, $errstr, 5);
-                    if($socket){
-                        $historico_porta->status = true;
-                    } else {
+                    if(!$socket || $socket == null){
                         $historico_porta->status = false;
+                    } else {
+                        $historico_porta->status = true;
                     }
                     $historico_porta->save();
                 }

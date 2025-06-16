@@ -25,10 +25,16 @@
         </div>
         
         <div>
-            <a href="" class="p-1">configurações</a>
+            <a href="{{route('site.configuracoes')}}" class="p-1">configurações</a>
             <a href="{{route('site.porta')}}" class="p-1">adicionar porta</a>
             <a href="{{route('site.adicionar')}}" class="p-1">adicionar host</a>
-            <a href="" class="p-1">login</a>
+            @auth
+                <a href="{{route('site.user.login')}}" class="p-1">logout</a>
+            @else
+                <a href="{{route('site.user.login')}}" class="p-1">login</a>
+            @endauth
+            
+            
         </div>
     </header>
 
@@ -45,8 +51,22 @@
                     <p><span class="font-semibold">Packet Loss: </span>0%</p>
                     <p><span class="font-semibold">Tempo de resposta: </span>0/0/0ms</p>
                 </div>
+
+                <div class="pl-2 pt-2">
+                    <h1 class="font-semibold">PORTAS</h1>
+                    <div class="flex">
+                        @foreach ($host->portas as $porta)
+                            <?php $hporta = $porta->historicoportas->first()?>      
+                                <div class="bg-blue-500 m-1">
+                                    <a class="font-semibold" href="#">{{$porta->nome}}</a>
+                                    <p class="center">NÃO MONITORADA</p>
+                                </div>
+                        @endforeach
+                    </div>
+                </div>
+
                 <div class="right p-1">
-                    <a class="font-semibold" href="#">Histórico</a>
+                    <a class="font-semibold" href="{{route('site.historico', $host->id)}}">Histórico</a>
                 </div>
             </div>
         @endforeach
@@ -63,8 +83,49 @@
                     <p><span class="font-semibold">Packet Loss: </span>{{$historico->pk_loss}}%</p>
                     <p><span class="font-semibold">Tempo de resposta: </span>{{$historico->tr_min}}/{{$historico->tr_max}}/{{$historico->tr_med}}ms</p>
                 </div>
+
+                <div class="pl-2 pt-2">
+                    <h1 class="font-semibold">PORTAS</h1>
+                    <div class="flex">
+                        @foreach ($host->portas as $porta)
+                            <?php $hporta = $porta->historicoportas->first()?>
+
+                            @if ($porta->ativa)
+
+                                @if ($hporta != null && $hporta->status)
+                                    <div class="bg-green-500 m-1">
+                                        <a class="font-semibold" href="#">{{$porta->nome}}</a>
+                                        <p class="center">{{$porta->porta}}</p>
+                                        <p class="center">ATIVA</p>
+                                    </div>
+                                @elseif ($hporta != null && !$hporta->status)
+                                    <div class="bg-red-500 m-1">
+                                        <a class="font-semibold" href="#">{{$porta->nome}}</a>
+                                        <p class="center">{{$porta->porta}}</p>
+                                        <p class="center">PROBLEMA</p>
+                                    </div>
+                                @else
+                                    <div class="bg-gray-500 m-1">
+                                        <a class="font-semibold" href="#">{{$porta->nome}}</a>
+                                        <p class="center">{{$porta->porta}}</p>
+                                        <p class="center">S/HISTORICO</p>
+                                    </div>
+                                @endif
+                                
+                            @else
+
+                                <div class="bg-blue-500 m-1">
+                                    <a class="font-semibold" href="#">{{$porta->nome}}</a>
+                                    <p class="center">NÃO MONITORADA</p>
+                                </div>
+
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+
                 <div class="right p-1">
-                    <a class="font-semibold" href="#">Histórico</a>
+                    <a class="font-semibold" href="{{route('site.historico', $host->id)}}">Histórico</a>
                 </div>
             </div>
         @endforeach
@@ -92,15 +153,23 @@
 
                             @if ($porta->ativa)
 
-                                @if ($hporta->status)
+                                @if ($hporta != null && $hporta->status)
                                     <div class="bg-green-500 m-1">
                                         <a class="font-semibold" href="#">{{$porta->nome}}</a>
+                                        <p class="center">{{$porta->porta}}</p>
                                         <p class="center">ATIVA</p>
                                     </div>
-                                @else
+                                @elseif ($hporta != null && !$hporta->status)
                                     <div class="bg-red-500 m-1">
                                         <a class="font-semibold" href="#">{{$porta->nome}}</a>
+                                        <p class="center">{{$porta->porta}}</p>
                                         <p class="center">PROBLEMA</p>
+                                    </div>
+                                @else
+                                    <div class="bg-gray-400 m-1">
+                                        <a class="font-semibold" href="#">{{$porta->nome}}</a>
+                                        <p class="center">{{$porta->porta}}</p>
+                                        <p class="center">S/HISTORICO</p>
                                     </div>
                                 @endif
                                 
@@ -116,7 +185,7 @@
                     </div>
                 </div>
                 <div class="right p-1">
-                    <a class="font-semibold" href="#">Histórico</a>
+                    <a class="font-semibold" href="{{route('site.historico', $host->id)}}">Histórico</a>
                 </div>  
             </div>
         @endforeach
@@ -132,8 +201,19 @@
                     <p><span class="font-semibold">Packet Loss: </span>0%</p>
                     <p><span class="font-semibold">Tempo de resposta: </span>0/0/0ms</p>
                 </div>
-                <div class="right p-1">
-                    <a class="font-semibold" href="#">Histórico</a>
+
+                <div class="pl-2 pt-2">
+                    <h1 class="font-semibold">PORTAS</h1>
+                    <div class="flex">
+                        @foreach ($host->portas as $porta)
+                            <?php $hporta = $porta->historicoportas->first()?>      
+                            <div class="bg-gray-400 m-1">
+                                <a class="font-semibold" href="#">{{$porta->nome}}</a>
+                                <p class="center">{{$porta->porta}}</p>
+                                <p class="center">S/HISTORICO</p>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         @endforeach

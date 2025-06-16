@@ -36,4 +36,19 @@ class HostController extends Controller
         
         return view("site.adicionar");
     }
+
+    public function destroy($id) {
+        $host = Host::find($id);
+        $host->delete();
+        return redirect()->route("site.configuracoes");
+    }
+
+    public function update($id, Request $request) {
+        $host = Host::find($id);
+        $host_up = $request->all();
+        $ativa = $request->has('ativa') ? true : false;
+        $host_up['ativa'] = $ativa;
+        $host->update($host_up);
+        return redirect()->route("site.configuracoes");
+    }
 }

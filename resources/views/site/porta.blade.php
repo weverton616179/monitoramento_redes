@@ -13,9 +13,9 @@
                 </div>
                 <div>
                     <label for="names">Escolha uma Host:</label>
-                    <select id="host_id" name="names">
+                    <select id="host_id" name="host_id">
                         @foreach($hosts as $host) {
-                            <option value="{{$host->id}}">{{$host->nome}}</option>
+                            <option id="host_id" value="{{$host->id}}">{{$host->nome}}</option>
                         } 
                         @endforeach
                     </select>
