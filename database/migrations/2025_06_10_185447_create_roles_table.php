@@ -25,6 +25,16 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
+
+        Schema::create('host_porta', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('host_id');
+            $table->foreign('host_id')->references('id')->on('hosts')->onDelete('cascade');
+
+            $table->unsignedBigInteger('porta_id');
+            $table->foreign('porta_id')->references('id')->on('portas')->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -34,5 +44,6 @@ return new class extends Migration
     {
         // Schema::dropIfExists('roles');
         Schema::dropIfExists('user_host');
+        Schema::dropIfExists('host_porta');
     }
 };

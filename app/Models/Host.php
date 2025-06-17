@@ -30,6 +30,7 @@ class Host extends Model
     }
 
     public function portas() {
-        return $this->hasMany(Porta::class);
+        // return $this->hasMany(Porta::class);
+        return $this->belongsToMany(Porta::class, 'host_porta');
     }
 }

@@ -6,7 +6,7 @@
         <h1 class="font-bold w-1/2 m-auto text-4xl">Edição de Porta</h1>
         <form action="{{route('site.porta.update', $porta->id)}}" method="POST" class="">
             @csrf
-            <input type="hidden" name="host_id" value="{{$host->id}}">
+            {{-- <input type="hidden" name="host_id" value="{{$host->id}}"> --}}
             <div class="flex justify-between">
                 <div>
                     <h2>nome Porta</h2>

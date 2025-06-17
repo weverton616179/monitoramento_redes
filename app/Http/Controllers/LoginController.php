@@ -19,11 +19,20 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
  
-            return redirect()->intended('site.painel');
+            return redirect()->route('site.painel');
         }
     }
 
     public function cadastrar() {
         return view('site.create');
+    }
+
+    public function login() {
+        return view("site.login");
+    }
+
+    public function logout() {
+        Auth::logout();
+        return redirect()->route('site.painel');
     }
 }

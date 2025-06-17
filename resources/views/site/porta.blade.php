@@ -11,7 +11,7 @@
                     <h2>nome Porta</h2>
                     <input name="nome" id="nome" type="text">
                 </div>
-                <div>
+                {{-- <div>
                     <label for="names">Escolha uma Host:</label>
                     <select id="host_id" name="host_id">
                         @foreach($hosts as $host) {
@@ -19,7 +19,7 @@
                         } 
                         @endforeach
                     </select>
-                </div>
+                </div> --}}
             </div>
             <div class="flex justify-between">
                 <div class="m-1">

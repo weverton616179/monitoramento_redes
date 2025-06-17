@@ -14,18 +14,21 @@ class PortaController extends Controller
     }
 
     public function store(Request $request) {
-        $porta = $request->all();
+        $porta = ['ativa' => $request->ativa, 'nome' => $request->nome, 'porta' => $request->porta];
 
         $ativa = $request->has('ativa') ? true : false;
         $porta['ativa'] = $ativa;
-        Porta::create($porta);
+        $porta_n = Porta::create($porta);
+
+        // $host = Host::find($request->host_id);
+        // $porta_n->host()->attach($host);
         return redirect()->route('site.painel');
     }
 
     public function destroy($id) {
         $porta = Porta::find($id);
         $porta->delete();
-        return redirect()->route("site.host.editar", $porta->host_id);
+        return redirect()->route("site.configuracoes");
     }
 
     public function update($id, Request $request) {
@@ -34,6 +37,8 @@ class PortaController extends Controller
         $ativa = $request->has('ativa') ? true : false;
         $porta_up['ativa'] = $ativa;
         $porta->update($porta_up);
-        return redirect()->route("site.host.editar", $porta->host_id);
+
+
+        return redirect()->route("site.configuracoes");
     }
 }

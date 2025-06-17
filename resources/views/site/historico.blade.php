@@ -31,11 +31,7 @@
 
                 <div class="flex my-3">
                     <h1 class="w-[10vw] ">{{$historico->updated_at}}</h1>
-                    @if ($historico->ativo)
-                        <h1 class="w-[10vw] ">ATIVO</h1>
-                    @else
-                        <h1 class="w-[10vw] ">PROBLEMA</h1>
-                    @endif
+                    <h1 class="w-[10vw] ">{{$historico->status}}</h1>
                     <h1 class="w-[10vw] ">{{$historico->pk_loss}}%</h1>
                     <h1 class="w-[10vw] ">{{$historico->tr_min}}/{{$historico->tr_max}}/{{$historico->tr_med}}ms</h1>
                     @foreach ($historico->historicoportas as $historicoportas)

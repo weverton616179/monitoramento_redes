@@ -20,6 +20,6 @@ class UserController extends Controller
         $user = User::create($user);
 
         Auth::login($user);
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('site.painel');
     }
 }

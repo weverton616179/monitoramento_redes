@@ -25,11 +25,12 @@
         </div>
         
         <div>
-            <a href="{{route('site.configuracoes')}}" class="p-1">configurações</a>
-            <a href="{{route('site.porta')}}" class="p-1">adicionar porta</a>
-            <a href="{{route('site.adicionar')}}" class="p-1">adicionar host</a>
+            
             @auth
-                <a href="{{route('site.user.login')}}" class="p-1">logout</a>
+                <a href="{{route('site.configuracoes')}}" class="p-1">configurações</a>
+                <a href="{{route('site.porta')}}" class="p-1">adicionar porta</a>
+                <a href="{{route('site.adicionar')}}" class="p-1">adicionar host</a>
+                <a href="{{route('site.user.logout')}}" class="p-1">logout</a>
             @else
                 <a href="{{route('site.user.login')}}" class="p-1">login</a>
             @endauth
@@ -88,7 +89,8 @@
                     <h1 class="font-semibold">PORTAS</h1>
                     <div class="flex">
                         @foreach ($host->portas as $porta)
-                            <?php $hporta = $porta->historicoportas->first()?>
+                            
+                            <?php $hporta = $porta->historicoportas->where('historico_id', $historico->id)->first()?>
 
                             @if ($porta->ativa)
 
@@ -96,7 +98,7 @@
                                     <div class="bg-green-500 m-1">
                                         <a class="font-semibold" href="#">{{$porta->nome}}</a>
                                         <p class="center">{{$porta->porta}}</p>
-                                        <p class="center">ATIVA</p>
+                                        <p class="center">ATIAVA</p>
                                     </div>
                                 @elseif ($hporta != null && !$hporta->status)
                                     <div class="bg-red-500 m-1">
@@ -133,7 +135,6 @@
         @foreach ($hosts_at as $host)
             <?php
             $historico = $host->historicos->first();
-            $historico_portas = $historico->historicoportas->all();
             ?>
             <div class="problems rounded-md bg-green-300">
                 <div class="nome text-center bg-green-400">
@@ -149,7 +150,7 @@
                     <h1 class="font-semibold">PORTAS</h1>
                     <div class="flex">
                         @foreach ($host->portas as $porta)
-                            <?php $hporta = $porta->historicoportas->first()?>
+                            <?php $hporta = $porta->historicoportas->where('historico_id', $historico->id)->first()?>
 
                             @if ($porta->ativa)
 

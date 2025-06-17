@@ -12,14 +12,15 @@ class Porta extends Model
 
     protected $fillable = [
         'nome',
-        'host_id',
+        // 'host_id',
         'ativa',
         'porta',
     ];
 
     public function host()
     {
-        return $this->belongsTo(Host::class);
+        // return $this->belongsTo(Host::class);
+        return $this->belongsToMany(Host::class, 'host_porta');
     }
 
     public function historicoportas() {

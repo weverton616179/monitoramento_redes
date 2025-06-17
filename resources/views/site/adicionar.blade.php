@@ -20,6 +20,25 @@
                     <input type="checkbox" name="ativa" id="ativa" >
                 </div>
             </div>
+
+            <div class="">
+                <h1 class="font-bold text-4xl py-[5vh]">Selecione as portas desejadas</h1>
+                <div class="flex py-[1vh] justify-between">
+                    <h1 class="font-bold w-[10vw]">Nome porta</h1>
+                    <h1 class="font-bold w-[10vw]">Porta</h1>
+                    <h1 class="font-bold w-[10vw]">Seleção</h1>
+                </div>
+                @foreach($portas as $porta)
+
+                    <div class="flex py-[1vh] justify-between">
+                        <h1 class="w-[10vw]">{{$porta->nome}}</h1>
+                        <h1 class="w-[10vw]">{{$porta->porta}}</h1>
+                        <input class="w-[10vw]" type="checkbox" name="portas[]" value="{{$porta->id}}" id="porta_{{$porta->id}}">
+                    </div>
+
+                @endforeach
+            </div>
+
             <button class="bg-green-500 active:bg-green-700">Salvar</button>
         </form>
     </div>

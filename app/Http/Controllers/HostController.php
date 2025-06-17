@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Models\Host;
+use App\Models\Porta;
 
 class HostController extends Controller
 {
@@ -25,16 +26,24 @@ class HostController extends Controller
     }
 
     public function store(Request $request) {
-        $host = $request->all();
+        $host = ['nome' => $request->nome, 'ip' => $request->ip, 'ativa' => $request->ativa];
         $ativa = $request->has('ativa') ? true : false;
         $host['ativa'] = $ativa;
-        Host::create($host);
+        $host_nova = Host::create($host);
+
+        $portas_selecionadas = $request->input('portas', []);
+        foreach($portas_selecionadas as $porta_id) {
+            $porta = Porta::find($porta_id);
+            $host_nova->portas()->attach($porta);
+        }
+
+
         return redirect()->route('site.painel');
     }
 
     public function adicionar(Request $request) {
-        
-        return view("site.adicionar");
+        $portas = Porta::all();
+        return view("site.adicionar", compact('portas'));
     }
 
     public function destroy($id) {
@@ -49,6 +58,14 @@ class HostController extends Controller
         $ativa = $request->has('ativa') ? true : false;
         $host_up['ativa'] = $ativa;
         $host->update($host_up);
+
+        $host->portas()->detach();
+        $portas_selecionadas = $request->input('portas', []);
+        foreach($portas_selecionadas as $porta_id) {
+            $porta = Porta::find($porta_id);
+            $host->portas()->attach($porta);
+        }
+
         return redirect()->route("site.configuracoes");
     }
 }

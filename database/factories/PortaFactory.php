@@ -20,7 +20,7 @@ class PortaFactory extends Factory
             'nome' => fake()->name(),
             'porta' => fake()->name(),
             'ativa' => true,
-            'host_id' => 1,
+            // 'host_id' => 1,
         ];
     }
 }
