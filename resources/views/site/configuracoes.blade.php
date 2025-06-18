@@ -1,7 +1,7 @@
 @extends('site.layout')
 @section('titulo', 'Configurações')
 @section('conteudo')
-    <main class="w-[80vw] m-auto mt-[3vw]">
+    <main class="w-[90vw] m-auto mt-[3vw]">
         <section class="flex justify-between my-2">
             <h1 class="font-bold text-2xl">Lista de Hosts</h1>
             <div>
@@ -10,17 +10,37 @@
         </section>
         <section>
             <div class="flex justify-between my-3">
-                <h1 class="w-[30vw] m-auto font-bold">NOME</h1>
-                <h1 class="w-[30vw] m-auto font-bold">IP</h1>
+                <h1 class="w-[10vw] m-auto font-bold">NOME</h1>
+                <h1 class="w-[10vw] m-auto font-bold">IP</h1>
+
+                <h1 class="w-[10vw] m-auto font-bold">WARNING LOSS</h1>
+                <h1 class="w-[10vw] m-auto font-bold">CRITICAL LOSS</h1>
+                <h1 class="w-[10vw] m-auto font-bold">WARNING TIME</h1>
+                <h1 class="w-[10vw] m-auto font-bold">CRITICAL TIME</h1>
+
+                <h1 class="w-[5vw] m-auto font-bold">ATIVA</h1>
                 <h1 class="w-[10vw] m-auto font-bold">MONITORANDO</h1>
                 <h1 class="w-[10vw] m-auto font-bold">AÇÕES</h1>
             </div>
             @foreach($hosts as $host)
                 <div class="flex justify-between mt-2">
-                    <h1 class="w-[30vw] m-auto">{{$host->nome}}</h1>
-                    <h1 class="w-[30vw] m-auto">{{$host->ip}}</h1>
-                    <div class="w-[10vw] m-auto">
+                    <h1 class="w-[10vw] m-auto">{{$host->nome}}</h1>
+                    <h1 class="w-[10vw] m-auto">{{$host->ip}}</h1>
+
+                    <h1 class="w-[10vw] m-auto">{{$host->perda_wng}}</h1>
+                    <h1 class="w-[10vw] m-auto">{{$host->perda_crt}}</h1>
+                    <h1 class="w-[10vw] m-auto">{{$host->tempo_wng}}</h1>
+                    <h1 class="w-[10vw] m-auto">{{$host->tempo_crt}}</h1>
+
+                    <div class="w-[5vw] m-auto">
                         @if ($host->ativa)
+                            <input type="checkbox" checked disabled>
+                        @else
+                            <input type="checkbox" disabled>
+                        @endif
+                    </div>
+                    <div class="w-[10vw] m-auto">
+                        @if ($host->monitorar)
                             <input type="checkbox" checked disabled>
                         @else
                             <input type="checkbox" disabled>

@@ -8,16 +8,39 @@
             @csrf
             <div>
                 <h2>Nome</h2>
-                <input name="nome" id="nome" type="text">
+                <input name="nome" id="nome" type="text" class="border border-gray-600 bg-gray-200" required>
             </div>
             <div class="flex justify-between">
                 <div class="m-1">
                     <h2>Endereço de IP</h2>
-                    <input type="text" name="ip" id="ip">
+                    <input type="text" name="ip" id="ip" class="border border-gray-600 bg-gray-200" required>
                 </div>
                 <div class="m-1 mx-4">
-                    <h2>Monitorando</h2>
-                    <input type="checkbox" name="ativa" id="ativa" >
+                    <h2>Ativa</h2>
+                    <input type="checkbox" name="ativa" id="ativa" checked>
+                </div>
+                <div class="m-1 mx-4">
+                    <h2>Monitorar</h2>
+                    <input type="checkbox" name="monitorar" id="monitorar" checked>
+                </div>
+            </div>
+
+            <div class="flex justify-between">
+                <div class="m-1">
+                    <h2>Perda de pacotes (warning %)</h2>
+                    <input type="number" name="perda_wng" id="perda_wng" class="border border-yellow-600 bg-yellow-200" required>
+                </div>
+                <div class="m-1">
+                    <h2>Tempo de resposta (warning ms)</h2>
+                    <input type="number" name="tempo_wng" id="tempo_wng" class="border border-yellow-600 bg-yellow-200" required>
+                </div>
+                <div class="m-1">
+                    <h2>Perda de pacotes (critical %)</h2>
+                    <input type="number" name="perda_crt" id="perda_crt" class="border border-red-600 bg-red-200" required>
+                </div>
+                <div class="m-1">
+                    <h2>Tempo de resposta (critical ms)</h2>
+                    <input type="number" name="tempo_crt" id="tempo_crt" class="border border-red-600 bg-red-200" required>
                 </div>
             </div>
 

@@ -6,6 +6,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use App\Models\Historico;
 use App\Models\Historicoportas;
+use Acamposm\Ping\Ping;
+use Acamposm\Ping\PingCommandBuilder;
 
 class PingHost implements ShouldQueue
 {
@@ -28,51 +30,43 @@ class PingHost implements ShouldQueue
     {
         $host = $this->host;
 
-        if($host->ativa){
+        if($host->monitorar){
             $ip = $host->ip;
             $host_id = $host->id;
             $portas = $host->portas;
-            
 
             $historico = new Historico();
             $historico->host_id = $host_id;
-            $ping = shell_exec("C:\Windows\system32\ping $ip");
 
-            if (preg_match('/Esgotado\s*o\s*tempo/', $ping, $esgotado)) {$esgotado_found = true;} else {$esgotado_found = false;}
-            if (preg_match('/tente\s*novamente./', $ping, $tente)) {$tente_found = true;} else {$tente_found = false;}
+            $ping = null;
+            try {
+                $command = (new PingCommandBuilder($ip))->count(3)->packetSize(4)->ttl(40);
+                $ping = (new Ping($command))->run();
+            } catch (\Exception $e) {
+                $ping = null;
+            }
 
-            if($esgotado_found || $tente_found) {
+            
 
-                
-                
+            if($ping){
+                $historico->pk_loss = $ping->statistics->packet_loss;
+                $historico->tr_min = $ping->rtt->min * 1000;
+                $historico->tr_max = $ping->rtt->max * 1000;
+                $historico->tr_med = $ping->rtt->avg * 1000;
+                if($ping->statistics->packet_loss >= $host->perda_crt || ($ping->rtt->avg * 1000) >= $host->tempo_crt) {
+                    $historico->status = 'PROBLEMA';
+                }elseif ($ping->statistics->packet_loss >= $host->perda_wng || ($ping->rtt->avg * 1000) >= $host->tempo_wng) {
+                    $historico->status = 'WARNING';
+                } else {
+                    $historico->status = 'ATIVO';
+                }
+
+            } else {
                 $historico->status = 'PROBLEMA';
                 $historico->pk_loss = 100;
                 $historico->tr_min = 0;
                 $historico->tr_max = 0;
                 $historico->tr_med = 0;
-
-            } else {
-                if (preg_match('/nimo\s*=\s*(\d+)/', $ping, $tr_min)) {$tr_min_value = intval($tr_min[1]);} else {$tr_min_value = 0;}
-
-                if (preg_match('/ximo\s*=\s*(\d+)/', $ping, $tr_max)) {$tr_max_value = intval($tr_max[1]);} else {$tr_max_value = 0;}
-
-                if (preg_match('/dia\s*=\s*(\d+)/', $ping, $tr_med)) {$tr_med_value = intval($tr_med[1]);} else {$tr_med_value = 0;}
-
-                if (preg_match('/\((\d+%)\s+de\s+perda\)/', $ping, $pk_loss)) {$pk_loss_value = intval($pk_loss[1]);} else {$pk_loss_value = 0;}
-                
-                $historico->pk_loss = $pk_loss_value;
-                $historico->tr_min = $tr_min_value;
-                $historico->tr_max = $tr_max_value;
-                $historico->tr_med = $tr_med_value;
-                if($pk_loss_value == 100) {
-                    $historico->status = 'PROBLEMA';
-                } else {
-                    $historico->status = 'ATIVO';
-                }
-
-
-
-                
             }
 
             $historico->save();
@@ -95,7 +89,6 @@ class PingHost implements ShouldQueue
                 }
             }
 
-            
             info($historico);
 
         }

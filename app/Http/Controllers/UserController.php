@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function login() {
-        return view("site.login");
-    }
+    
 
     public function store(Request $request) 
     {

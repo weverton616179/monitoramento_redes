@@ -16,6 +16,12 @@ return new class extends Migration
             $table->string('nome');
             $table->string('ip');
             $table->boolean('ativa');
+            $table->boolean('monitorar');
+
+            $table->integer('perda_wng');
+            $table->integer('perda_crt');
+            $table->integer('tempo_wng');
+            $table->integer('tempo_crt');
 
             $table->timestamps();
         });

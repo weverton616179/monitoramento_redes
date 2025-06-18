@@ -91,6 +91,6 @@ Schedule::call(function () {
         // }
     }
 
-    info("segundo");
-})->everyThirtySeconds();
+    // info("segundo");
+})->everyTenSeconds();
 

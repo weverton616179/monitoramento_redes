@@ -7,11 +7,11 @@
             @csrf
             <div class="py-1">
                 <h1>email</h1>
-                <input type="email" name="email">
+                <input class="border border-gray-600" type="email" name="email" placeholder="ex@email.com" required>
             </div>
             <div class="py-1">
                 <h1>senha</h1>
-                <input type="password" name="password">
+                <input class="border border-gray-600" type="password" name="password" required>
             </div>
             <button class="bg-green-400">Entrar</button>
         </form>

@@ -7,6 +7,9 @@ use App\Http\Controllers\PortaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+use Acamposm\Ping\Ping;
+use Acamposm\Ping\PingCommandBuilder;
+
 Route::get('/', function () { return redirect()->route('site.painel');});
 
 Route::get('/painel', [HostController::class,'index'])->name('site.painel');
@@ -25,18 +28,18 @@ Route::get('/porta/editar/{id}', [ConfiguracoesController::class,'editar_porta']
 Route::post('/porta/update/{id}', [PortaController::class,'update'])->name('site.porta.update');
 Route::delete('/porta/delete/{id}', [PortaController::class,'destroy'])->name('site.porta.delete');
 
-Route::get('/login', [LoginController::class, 'login'])->name('site.user.login');
+Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::get('/logout', [LoginController::class,'logout'])->name('site.user.logout');
 Route::post('/auth', [LoginController::class,'authenticate'])->name('login.auth');
 Route::get('/cadastrar', [LoginController::class,'cadastrar'])->name('login.cadastrar');
 Route::post('/user/store', [UserController::class,'store'])->name("user.store");
 
 Route::get('/a', function() {
-    // $host = \App\Models\Host::first();
-    $user = \App\Models\User::first();
-    
+    $command = (new PingCommandBuilder('www.google.com'))->count(4)->packetSize(4)->ttl(ttl: 30);
 
-    dd($user->hosts);
-    // $user->host()->attach($host);
+    // Sample output from Windows based server
+    $ping = (new Ping($command))->run();
+
+    dd($ping);
 });
 

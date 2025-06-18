@@ -8,20 +8,47 @@
             @csrf
             <div>
                 <h2>Nome</h2>
-                <input name="nome" id="nome" type="text" value="{{$host->nome}}">
+                <input name="nome" id="nome" type="text" value="{{$host->nome}}" class="border border-black bg-gray-200">
             </div>
             <div class="flex justify-between">
                 <div class="m-1">
                     <h2>Endereço de IP</h2>
-                    <input type="text" name="ip" id="ip" value="{{$host->ip}}">
+                    <input type="text" name="ip" id="ip" value="{{$host->ip}}" class="border border-black bg-gray-200">
                 </div>
                 <div class="m-1 mx-4">
-                    <h2>Monitorando</h2>
+                    <h2>Ativa</h2>
                     @if ($host->ativa)
                         <input type="checkbox" name="ativa" id="ativa" checked>
                     @else
                         <input type="checkbox" name="ativa" id="ativa" >
                     @endif
+                </div>
+                <div class="m-1 mx-4">
+                    <h2>Monitorar</h2>
+                    @if ($host->monitorar)
+                        <input type="checkbox" name="monitorar" id="monitorar" checked>
+                    @else
+                        <input type="checkbox" name="monitorar" id="monitorar" >
+                    @endif
+                </div>
+            </div>
+
+            <div class="flex justify-between">
+                <div class="m-1">
+                    <h2>Perda de pacotes (warning %)</h2>
+                    <input type="number" name="perda_wng" id="perda_wng" class="border border-yellow-600 bg-yellow-200" required value="{{$host->perda_wng}}">
+                </div>
+                <div class="m-1">
+                    <h2>Tempo de resposta (warning ms)</h2>
+                    <input type="number" name="tempo_wng" id="tempo_wng" class="border border-yellow-600 bg-yellow-200" required value="{{$host->tempo_wng}}">
+                </div>
+                <div class="m-1">
+                    <h2>Perda de pacotes (critical %)</h2>
+                    <input type="number" name="perda_crt" id="perda_crt" class="border border-red-600 bg-red-200" required value="{{$host->perda_crt}}">
+                </div>
+                <div class="m-1">
+                    <h2>Tempo de resposta (critical ms)</h2>
+                    <input type="number" name="tempo_crt" id="tempo_crt" class="border border-red-600 bg-red-200" required value="{{$host->tempo_crt}}">
                 </div>
             </div>
 

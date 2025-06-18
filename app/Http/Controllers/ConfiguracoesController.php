@@ -24,9 +24,9 @@ class ConfiguracoesController extends Controller
     }
 
     public function editar_porta($id) {
-        
+        $hosts = Host::all();
         $porta = Porta::find($id);
-        return view("site.editar_porta", compact("porta"));
+        return view("site.editar_porta", compact("porta", "hosts"));
     }
 
     public function historico($id) {

@@ -14,6 +14,11 @@ class Host extends Model
         'nome',
         'ip',
         'ativa',
+        'monitorar',
+        'perda_wng',
+        'perda_crt',
+        'tempo_wng',
+        'tempo_crt',
     ];
 
     public function users()

@@ -20,6 +20,12 @@ class PortaController extends Controller
         $porta['ativa'] = $ativa;
         $porta_n = Porta::create($porta);
 
+        $hosts_selecionadas = $request->input('hosts', []);
+        foreach($hosts_selecionadas as $host_id) {
+            $host = Host::find($host_id);
+            $porta_n->host()->attach($host);
+        }
+
         // $host = Host::find($request->host_id);
         // $porta_n->host()->attach($host);
         return redirect()->route('site.painel');
@@ -37,6 +43,13 @@ class PortaController extends Controller
         $ativa = $request->has('ativa') ? true : false;
         $porta_up['ativa'] = $ativa;
         $porta->update($porta_up);
+
+        $porta->host()->detach();
+        $hosts_selecionadas = $request->input('hosts', []);
+        foreach($hosts_selecionadas as $host_id) {
+            $host = Host::find($host_id);
+            $porta->host()->attach($host);
+        }
 
 
         return redirect()->route("site.configuracoes");

@@ -7,15 +7,15 @@
             @csrf
             <div class="py-1">
                 <h1>nome</h1>
-                <input type="text" name="name">
+                <input class="border border-gray-600" type="text" name="name" required>
             </div>
             <div class="py-1">
                 <h1>email</h1>
-                <input type="email" name="email">
+                <input class="border border-gray-600" type="email" name="email" required>
             </div>
             <div class="py-1">
                 <h1>senha</h1>
-                <input type="password" name="password">
+                <input class="border border-gray-600" type="password" name="password" required>
             </div>
             <button class="bg-blue-400">Cadastrar</button>
         </form>
