@@ -21,6 +21,7 @@ class LoginController extends Controller
  
             return redirect()->route('site.painel');
         }
+        return back()->withErrors(['email' => 'Senha ou e-mail incorreto!']);
     }
 
     public function cadastrar() {

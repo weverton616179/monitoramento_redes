@@ -95,7 +95,14 @@
                         <div class="flex">
                             @foreach ($host->portas as $porta)
                                 
-                                <?php $hporta = $porta->historicoportas->where('historico_id', $historico->id)->first()?>
+                                <?php $hporta = $porta->historicoportas->where('historico_id', $historico->id)->first();
+                                    if($hporta == null) {
+                                        $aa = $host->historicos->skip(1)->first();
+                                        if($aa != null){
+                                            $hporta = $porta->historicoportas->where('historico_id', $aa->id)->first();
+                                        } 
+                                    }
+                                ?>
 
                                 @if ($porta->ativa)
 
@@ -157,7 +164,14 @@
                         <h1 class="font-semibold">PORTAS</h1>
                         <div class="flex">
                             @foreach ($host->portas as $porta)
-                                <?php $hporta = $porta->historicoportas->where('historico_id', $historico->id)->first()?>
+                                <?php $hporta = $porta->historicoportas->where('historico_id', $historico->id)->first();
+                                    if($hporta == null) {
+                                        $aa = $host->historicos->skip(1)->first();
+                                        if($aa != null){
+                                            $hporta = $porta->historicoportas->where('historico_id', $aa->id)->first();
+                                        } 
+                                    }
+                                ?>
 
                                 @if ($porta->ativa)
 
@@ -218,7 +232,14 @@
                         <h1 class="font-semibold">PORTAS</h1>
                         <div class="flex">
                             @foreach ($host->portas as $porta)
-                                <?php $hporta = $porta->historicoportas->where('historico_id', $historico->id)->first()?>
+                                <?php $hporta = $porta->historicoportas->where('historico_id', $historico->id)->first();
+                                    if($hporta == null) {
+                                        $aa = $host->historicos->skip(1)->first();
+                                        if($aa != null){
+                                            $hporta = $porta->historicoportas->where('historico_id', $aa->id)->first();
+                                        } 
+                                    }
+                                ?>
 
                                 @if ($porta->ativa)
 
@@ -310,14 +331,8 @@
             document.getElementById('sectionSh').style.display = 'grid';
             lists.forEach(list => {
                 const items = list.getElementsByTagName('li');
-
-                // const h2Elements = liElement.getElementsByTagName('h2');
-
-                // const nome = h2Elements[0].textContent.toLocaleLowerCase(); // Primeiro <h2>
-                // const ip = h2Elements[1].textContent.toLocaleLowerCase();
                 
                 for (let i = 0; i < items.length; i++) {
-                    // const itemText = items[i].textContent.toLocaleLowerCase();
                     const h2Elements = items[i].getElementsByTagName('h2');
                     const nome = h2Elements[0].textContent.toLocaleLowerCase();
                     const ip = h2Elements[1].textContent.toLocaleLowerCase();
@@ -327,12 +342,6 @@
                     } else {
                         items[i].style.display = 'none';
                     }
-
-                    // if (itemText.includes(searchTerm)) {
-                    //     items[i].style.display = 'list-item';
-                    // } else {
-                    //     items[i].style.display = 'none';
-                    // }
                 }
             });
         });
@@ -392,6 +401,26 @@
         });
 
     </script>
+    <script>
+        const busca = document.getElementById('busca');
+        const valor = localStorage.getItem('inputValue');
+        busca.value = valor;
+        setTimeout(() => {
+            // Código que executa após a espera
+        }, 2000);
+        console.log(valor);
+
+
+        busca.getElementById('busca').addEventListener('input', function() {
+            console.log(this.value);
+            localStorage.setItem('inputValue', this.value);
+        });
+    </script>
+    {{-- <script>
+        setTimeout(function() {
+            window.location.reload();
+        }, 15000);
+    </script> --}}
     
 
 @endsection

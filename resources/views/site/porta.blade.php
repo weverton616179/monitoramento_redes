@@ -2,6 +2,8 @@
 @section('titulo', 'Porta')
 @section('conteudo')
 
+<a href="{{route('site.painel')}}" class=" "><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00AAAA"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg></a>
+
     <div class="container w-1/2 m-auto">
         <h1 class="font-bold w-1/2 m-auto text-4xl">Cadastro de Porta</h1>
         <form action="{{route('site.porta.store')}}" method="POST" class="">
@@ -26,14 +28,14 @@
             <div class="">
                 <h1 class="font-bold text-4xl py-[5vh]">Atrelar as hosts</h1>
                 <div class="flex py-[1vh] justify-between">
-                    <h1 class="font-bold w-[10vw]">Nome host</h1>
+                    <h1 class="font-bold w-[20vw]">Nome host</h1>
                     <h1 class="font-bold w-[10vw]">host</h1>
                     <h1 class="font-bold w-[10vw]">Atrelar</h1>
                 </div>
                 @foreach($hosts as $host)
 
                     <div class="flex py-[1vh] justify-between">
-                        <h1 class="w-[10vw]">{{$host->nome}}</h1>
+                        <h1 class="w-[20vw]">{{$host->nome}}</h1>
                         <h1 class="w-[10vw]">{{$host->ip}}</h1>
                         <input class="w-[10vw]" type="checkbox" name="hosts[]" value="{{$host->id}}" id="host_{{$host->id}}">
                     </div>
