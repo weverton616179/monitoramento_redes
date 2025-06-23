@@ -24,7 +24,7 @@
 
         <div class="">
             <h2 class="font-bold text-4xl">Monitoramento de redes</h2>
-            <form action=""><input class="border focus:outline-none focus:ring-2 focus:ring-purple-600 border-gray-600 bg-gray-100 " type="search" name="busca" id="busca" placeholder="pesquisar"></form>
+            <form action=""><input class="border focus:outline-none focus:ring-2 focus:ring-purple-600 border-gray-600 bg-gray-100 " type="text" name="busca" id="busca" placeholder="pesquisar"></form>
         </div>
         
         <div>
@@ -81,8 +81,8 @@
                 <?php $historico = $host->historicos->first()?>
                 <li class="problems rounded-md bg-red-300">
                     <div class="nome text-center bg-red-400">
-                        <h2 class="text-lg font-semibold">{{$host->nome}}</h2>
-                        <h2 class="text-md">{{$host->ip}}</h2>
+                        <h2 class="titulo-host text-lg font-semibold">{{$host->nome}}</h2>
+                        <h2 class="ip-host text-md">{{$host->ip}}</h2>
                     </div>
                     <div class="pl-2 pt-2">
                         <p><span class="font-semibold">Status: </span>PROBLEMA DE CONEXÃO</p>
@@ -288,36 +288,54 @@
                     </div>
                 </li>
             @endforeach
-            </ul>
+        </ul>
     </main>
 
     <script>
-        const searchInput = document.getElementById('busca');
 
-        const sectionProblemas = document.getElementById('sectionProblemas');
-        const sectionNm = document.getElementById('sectionNm');
-        const sectionWarning = document.getElementById('sectionWarning');
-        const sectionAtivos = document.getElementById('sectionAtivos');
-        const sectionSh = document.getElementById('sectionSh');
+        document.getElementById('busca').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const lists = [
+                document.getElementById('sectionProblemas'), 
+                document.getElementById('sectionNm'),
+                document.getElementById('sectionWarning'),
+                document.getElementById('sectionAtivos'),
+                document.getElementById('sectionSh')
+            ];
+            
+            document.getElementById('sectionProblemas').style.display = 'grid';
+            document.getElementById('sectionNm').style.display = 'grid';
+            document.getElementById('sectionWarning').style.display = 'grid';
+            document.getElementById('sectionAtivos').style.display = 'grid';
+            document.getElementById('sectionSh').style.display = 'grid';
+            lists.forEach(list => {
+                const items = list.getElementsByTagName('li');
 
-        const sectionProblemasItems = Array.from(sectionProblemas.getElementsByTagName('li'));
-        const sectionNmItems = Array.from(sectionNm.getElementsByTagName('li'));
-        const sectionWarningItems = Array.from(sectionWarning.getElementsByTagName('li'));
-        const sectionAtivosItems = Array.from(sectionAtivos.getElementsByTagName('li'));
-        const sectionShItems = Array.from(sectionShitemsList.getElementsByTagName('li'));
+                // const h2Elements = liElement.getElementsByTagName('h2');
 
-        searchInput.addEventListener('input', () => {
-            const filter = searchInput.value.toLowerCase();
-            sectionAtivosItems.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                if(text.includes(filter)) {
-                    item.style.display = 'grid';
-                } else {
-                    item.style.display = 'none';
+                // const nome = h2Elements[0].textContent.toLocaleLowerCase(); // Primeiro <h2>
+                // const ip = h2Elements[1].textContent.toLocaleLowerCase();
+                
+                for (let i = 0; i < items.length; i++) {
+                    // const itemText = items[i].textContent.toLocaleLowerCase();
+                    const h2Elements = items[i].getElementsByTagName('h2');
+                    const nome = h2Elements[0].textContent.toLocaleLowerCase();
+                    const ip = h2Elements[1].textContent.toLocaleLowerCase();
+                    
+                    if (nome.includes(searchTerm) || ip.includes(searchTerm)) {
+                        items[i].style.display = 'list-item';
+                    } else {
+                        items[i].style.display = 'none';
+                    }
+
+                    // if (itemText.includes(searchTerm)) {
+                    //     items[i].style.display = 'list-item';
+                    // } else {
+                    //     items[i].style.display = 'none';
+                    // }
                 }
             });
         });
-
         
     </script>
     <script>
