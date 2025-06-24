@@ -313,7 +313,44 @@
     </main>
 
     <script>
-
+        const busca = document.getElementById('busca');
+        const valor = localStorage.getItem('inputValue');
+        busca.value = valor;
+        
+        const lists = [
+            document.getElementById('sectionProblemas'), 
+            document.getElementById('sectionNm'),
+            document.getElementById('sectionWarning'),
+            document.getElementById('sectionAtivos'),
+            document.getElementById('sectionSh')
+        ];
+        
+        document.getElementById('sectionProblemas').style.display = 'grid';
+        document.getElementById('sectionNm').style.display = 'grid';
+        document.getElementById('sectionWarning').style.display = 'grid';
+        document.getElementById('sectionAtivos').style.display = 'grid';
+        document.getElementById('sectionSh').style.display = 'grid';
+        lists.forEach(list => {
+            const items = list.getElementsByTagName('li');
+            
+            for (let i = 0; i < items.length; i++) {
+                const h2Elements = items[i].getElementsByTagName('h2');
+                const nome = h2Elements[0].textContent.toLocaleLowerCase();
+                const ip = h2Elements[1].textContent.toLocaleLowerCase();
+                
+                if (nome.includes(valor) || ip.includes(valor)) {
+                    items[i].style.display = 'list-item';
+                } else {
+                    items[i].style.display = 'none';
+                }
+            }
+        });
+        
+        busca.addEventListener('input', function() {
+            localStorage.setItem('inputValue', this.value);
+        });
+    </script>
+    <script>
         document.getElementById('busca').addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase();
             const lists = [
@@ -402,25 +439,8 @@
 
     </script>
     <script>
-        const busca = document.getElementById('busca');
-        const valor = localStorage.getItem('inputValue');
-        busca.value = valor;
-        setTimeout(() => {
-            // Código que executa após a espera
-        }, 2000);
-        console.log(valor);
-
-
-        busca.getElementById('busca').addEventListener('input', function() {
-            console.log(this.value);
-            localStorage.setItem('inputValue', this.value);
-        });
-    </script>
-    {{-- <script>
         setTimeout(function() {
             window.location.reload();
         }, 15000);
-    </script> --}}
-    
-
+    </script>
 @endsection

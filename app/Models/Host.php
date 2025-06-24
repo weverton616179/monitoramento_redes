@@ -26,8 +26,14 @@ class Host extends Model
         return $this->belongsToMany(User::class, 'user_host');
     }
 
+    public function historicosAsc() {
+        // return $this->hasMany(Historico::class)->orderBy('created_at', 'desc');
+        return $this->hasMany(Historico::class);
+    }
+
     public function historicos() {
         return $this->hasMany(Historico::class)->orderBy('created_at', 'desc');
+        
     }
 
     public function historico_recente() {

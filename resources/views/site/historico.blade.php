@@ -3,6 +3,7 @@
 @section('conteudo')
 
     <main>
+        <a href="{{route('site.painel')}}"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00AAAA"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg></a>
         <section class="w-[20vw] m-auto my-[5vh]">
             @php $historico_first = $historicos->first(); @endphp
             <h1 class="font-semibold">{{$host->nome}}</h1>
@@ -22,6 +23,17 @@
             <p><span class="font-semibold">Tempo de resposta: </span>{{$historico_first->tr_min}}/{{$historico_first->tr_max}}/{{$historico_first->tr_med}}ms</p>
         </section>
 
+        <section class="my-[40px] h-[30vh]">
+            <div class="py-5">
+                <h1 class="font-bold w-[50vw] m-auto text-center">Tempo total {{floor($tempo_total)}}h {{floor(($tempo_total - floor($tempo_total)) * 60)}}m</h1>
+                <h1 class="w-[50vw] m-auto text-center">Tempo <a class="text-green-600">ativo</a> {{floor($tempo_at)}}h {{floor(($tempo_at - floor($tempo_at)) * 60)}}m</h1>
+                <h1 class="w-[50vw] m-auto text-center">Tempo <a class="text-yellow-600">warning</a> {{floor($tempo_wr)}}h {{floor(($tempo_wr - floor($tempo_wr)) * 60)}}m</h1>
+                <h1 class="w-[50vw] m-auto text-center">Tempo <a class="text-red-600">problema</a> {{floor($tempo_pr)}}h {{floor(($tempo_pr - floor($tempo_pr)) * 60)}}m</h1>
+            </div>
+            <div class="w-[90vw] h-[8vh] m-auto">
+                <div id="graficoTres"></div>
+            </div>
+        </section>
         <section>
             <h1 class="font-bold w-[50vw] m-auto text-center">Tempo de resposta (ms)</h1>
             <div id="grafico" class="w-[90vw] h-[30vh] m-auto"></div>
@@ -30,11 +42,6 @@
             <h1 class="font-bold w-[50vw] m-auto text-center">Perda de pacote (%)</h1>
             <div id="graficoDois" class="w-[90vw] h-[30vh] m-auto"></div>
         </section>
-        <section class="my-[40px]">
-            <h1 class="font-bold w-[50vw] m-auto text-center">Tempo ativo</h1>
-            <div id="graficoTres" class="w-[90vw] h-[30vh] m-auto"></div>
-        </section>
-        
 
         <section class="w-[90vw] m-auto py-[30px]">
             <div class="flex">
@@ -99,9 +106,7 @@
             } else {
                 estatus.push(3);
             }
-            // estatus.push(historico.status);
         });
-        console.log(estatus)
 
         var options = {
         chart: {
@@ -137,7 +142,7 @@
         },
         series: [
             {
-                name: 'Tempo de resposta médio',
+                name: 'Perda de pacote (%)',
                 data: pk_loss
             },
         ],
@@ -150,33 +155,50 @@
         var optionsTres = {
         series: [{
             name: "Desktops",
-            data: estatus
+            data: estatus.map((status, index) => {
+                return {
+                    x: index + 1, // ou seus rótulos
+                    y: status,
+                    fillColor: status === 1 ? '#00ee00' : 
+                            status === 2 ? '#ffff00' : 
+                            status === 3 ? '#ff0000' : '#cccccc'
+                };
+            })
         }],
         chart: {
             width: '100%',
             height: '100%',
-            type: 'line',
+            type: 'bar',
+            stacked: true,
+            stackType: "100%",
+            sparkline: {
+                enabled: true
+            }
           
+        },
+        plotOptions: {
+            bar: {
+                columnWidth: '100%',
+                horizontal: false,
+            }, 
         },
         dataLabels: {
             enabled: false
         },
-        stroke: {
-            curve: 'straight'
-        },
-        title: {
-            text: 'Product Trends by Month',
-            align: 'left'
-        },
-        grid: {
-            row: {
-                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                opacity: 0.5
+        states: {
+            hover: {
+                filter: {
+                    type: 'none' // Remove efeito hover
+                }
             },
+            active: {
+                filter: {
+                    type: 'none' // Remove efeito de clique
+                }
+            }
         },
-        xaxis: {
-            categories: updated_at,
-            tickAmount: 30
+        tooltip: {
+            enabled: false
         }
         };
 

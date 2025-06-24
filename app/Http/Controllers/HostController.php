@@ -13,15 +13,15 @@ class HostController extends Controller
         $hosts_nm = Host::where('ativa', true)->where('monitorar', false)->get();
 
         $hosts_at = Host::where('ativa', true)->where('monitorar', true)->with('historicos')->get()->filter(function ($host) {
-            return $host->historicos->first() && $host->historicos->first()->status == 'ATIVO';
+            return $host->historicos()->orderBy('created_at', 'asc')->first() && $host->historicos()->orderBy('created_at', 'asc')->first()->status == 'ATIVO';
         });
 
         $hosts_wng = Host::where('ativa', true)->where('monitorar', true)->with('historicos')->get()->filter(function ($host) {
-            return $host->historicos->first() && $host->historicos->first()->status == 'WARNING';
+            return $host->historicos()->orderBy('created_at', 'asc')->first() && $host->historicos()->orderBy('created_at', 'asc')->first()->status == 'WARNING';
         });
 
         $hosts_pr = Host::where('ativa', true)->where('monitorar', true)->with('historicos')->get()->filter(function ($host) {
-            return $host->historicos->first() && $host->historicos->first()->status == 'PROBLEMA';
+            return $host->historicos()->orderBy('created_at', 'asc')->first() && $host->historicos()->orderBy('created_at', 'asc')->first()->status == 'PROBLEMA';
         });
 
         $hosts_sh = Host::where('ativa', true)->where('monitorar', true)->doesntHave('historicos')->get();
