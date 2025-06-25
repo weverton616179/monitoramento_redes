@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+
 
 class Host extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes, SoftCascadeTrait;
+    protected $softCascade = ['historicos'];
 
     protected $fillable = [
         'nome',
@@ -27,7 +31,6 @@ class Host extends Model
     }
 
     public function historicosAsc() {
-        // return $this->hasMany(Historico::class)->orderBy('created_at', 'desc');
         return $this->hasMany(Historico::class);
     }
 
@@ -36,12 +39,7 @@ class Host extends Model
         
     }
 
-    public function historico_recente() {
-        // return $this->historicos()->orderBy('created_at', 'desc')->first();
-    }
-
     public function portas() {
-        // return $this->hasMany(Porta::class);
         return $this->belongsToMany(Porta::class, 'host_porta');
     }
 }

@@ -16,11 +16,9 @@ return new class extends Migration
             $table->string('nome');
             $table->string('porta');
             $table->boolean('ativa');
-
-            // $table->unsignedBigInteger('host_id');
-            // $table->foreign('host_id')->references('id')->on('hosts')->onDelete('cascade');
             
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

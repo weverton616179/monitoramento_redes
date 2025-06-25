@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreign('porta_id')->references('id')->on('portas')->onDelete('cascade');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

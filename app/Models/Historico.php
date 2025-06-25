@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 class Historico extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes, SoftCascadeTrait;
+    protected $softCascade = ['historicoportas'];
 
     public function host()
     {

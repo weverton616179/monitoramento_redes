@@ -54,4 +54,10 @@ class PortaController extends Controller
 
         return redirect()->route("site.configuracoes");
     }
+
+    public function editar_porta($id) {
+        $hosts = Host::all();
+        $porta = Porta::find($id);
+        return view("site.editar_porta", compact("porta", "hosts"));
+    }
 }

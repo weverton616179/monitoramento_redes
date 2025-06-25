@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('tempo_crt');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

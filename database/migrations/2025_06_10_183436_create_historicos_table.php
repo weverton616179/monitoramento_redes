@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('host_id');
             $table->foreign('host_id')->references('id')->on('hosts')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

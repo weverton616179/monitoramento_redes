@@ -6,21 +6,27 @@
         <a href="{{route('site.painel')}}"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#00AAAA"><path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z"/></svg></a>
         <section class="w-[20vw] m-auto my-[5vh]">
             @php $historico_first = $historicos->first(); @endphp
-            <h1 class="font-semibold">{{$host->nome}}</h1>
-            <h3 class="font-semibold">{{$host->ip}}</h3>
-            @if (!$host->monitorar)
-                <h3 class="font-semibold text-blue-600">NÃO MONITORADA</h3>
-            @elseif ($historico_first == null)
+            @if ($historico_first)
+                <h1 class="font-semibold">{{$host->nome}}</h1>
+                <h3 class="font-semibold">{{$host->ip}}</h3>
+                @if (!$host->monitorar)
+                    <h3 class="font-semibold text-blue-600">NÃO MONITORADA</h3>
+                @elseif ($historico_first == null)
+                    <h3 class="font-semibold">SEM HISTORICO</h3>
+                @elseif ($historico_first->status == "ATIVO")
+                    <h3 class="font-semibold text-green-600">ATIVO</h3>
+                @elseif ($historico_first->status == "PROBLEMA")
+                    <h3 class="font-semibold text-red-600">PROBLEMA</h3>
+                @elseif ($historico_first->status == "WARNING")
+                    <h3 class="font-semibold text-yellow-600">WARNING</h3>
+                @endif
+                <p><span class="font-semibold">Packet Loss: </span>{{$historico_first->pk_loss}}%</p>
+                <p><span class="font-semibold">Tempo de resposta: </span>{{$historico_first->tr_min}}/{{$historico_first->tr_max}}/{{$historico_first->tr_med}}ms</p>
+            @else    
+                <h1 class="font-semibold">{{$host->nome}}</h1>
+                <h3 class="font-semibold">{{$host->ip}}</h3>
                 <h3 class="font-semibold">SEM HISTORICO</h3>
-            @elseif ($historico_first->status == "ATIVO")
-                <h3 class="font-semibold text-green-600">ATIVO</h3>
-            @elseif ($historico_first->status == "PROBLEMA")
-                <h3 class="font-semibold text-red-600">PROBLEMA</h3>
-            @elseif ($historico_first->status == "WARNING")
-                <h3 class="font-semibold text-yellow-600">WARNING</h3>
             @endif
-            <p><span class="font-semibold">Packet Loss: </span>{{$historico_first->pk_loss}}%</p>
-            <p><span class="font-semibold">Tempo de resposta: </span>{{$historico_first->tr_min}}/{{$historico_first->tr_max}}/{{$historico_first->tr_med}}ms</p>
         </section>
 
         <section class="my-[40px] h-[30vh]">
@@ -86,7 +92,8 @@
     </main>
     
     <script>
-        var historicos = <?php echo $historicos;?>;
+        var historicos = @json($historicosAsc);
+
         var pk_loss = [];
         var tr_max = [];
         var tr_med = [];
