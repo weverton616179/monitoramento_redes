@@ -11,10 +11,10 @@ class Historicoportas extends Model
 {
     use HasFactory, Notifiable, SoftDeletes;
 
-    public function historico()
-    {
-        return $this->belongsTo(Historico::class);
-    }
+    // public function historico()
+    // {
+    //     return $this->belongsTo(Historico::class);
+    // }
 
     public function porta()
     {

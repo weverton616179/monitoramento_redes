@@ -18,9 +18,9 @@ class Historico extends Model
         return $this->belongsTo(Host::class);
     }
     
-    public function historicoportas() {
-        return $this->hasMany(Historicoportas::class);
-    }
+    // public function historicoportas() {
+    //     return $this->hasMany(Historicoportas::class);
+    // }
 
     public function gravarhistorico() {
         $historico = new Historico();

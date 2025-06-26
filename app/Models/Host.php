@@ -23,6 +23,7 @@ class Host extends Model
         'perda_crt',
         'tempo_wng',
         'tempo_crt',
+        'tempo_id',
     ];
 
     public function users()
@@ -41,5 +42,9 @@ class Host extends Model
 
     public function portas() {
         return $this->belongsToMany(Porta::class, 'host_porta');
+    }
+
+    public function tempos() {
+        return $this->belongsToMany(Tempo::class, 'host_tempo');
     }
 }

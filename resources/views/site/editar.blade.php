@@ -9,9 +9,15 @@
         <h1 class="font-bold w-1/2 m-auto my-[6vh] text-4xl">Editar Host</h1>
         <form action="{{route('site.host.update', $host->id)}}" method="POST" class="">
             @csrf
-            <div>
-                <h2>Nome</h2>
-                <input name="nome" id="nome" type="text" value="{{$host->nome}}" class="border border-black bg-gray-200">
+            <div class="flex justify-between">
+                <div class="m-1">
+                    <h2>Nome</h2>
+                    <input name="nome" id="nome" type="text" value="{{$host->nome}}" class="border border-gray-600 bg-gray-200" required>
+                </div>
+                <div class="m-1">
+                    <h2>Tempo entre verificações (minutos)</h2>
+                    <input name="tempo" id="tempo" type="number" value="{{$tempo->tempo}}" class="border border-gray-600 bg-gray-200" required>
+                </div>
             </div>
             <div class="flex justify-between">
                 <div class="m-1">

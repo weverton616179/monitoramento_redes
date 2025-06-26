@@ -33,7 +33,7 @@ class PingHost implements ShouldQueue
         if($host->monitorar){
             $ip = $host->ip;
             $host_id = $host->id;
-            $portas = $host->portas;
+            // $portas = $host->portas;
 
             $historico = new Historico();
             $historico->host_id = $host_id;
@@ -71,23 +71,23 @@ class PingHost implements ShouldQueue
 
             $historico->save();
 
-            foreach($portas as $porta) {
+            // foreach($portas as $porta) {
 
-                if($porta->ativa) {
-                    $porta_num = $porta->porta;
-                    $historico_porta = new Historicoportas();
-                    $historico_porta->porta_id = $porta->id;
-                    $historico_porta->historico_id = $historico->id;
+            //     if($porta->ativa) {
+            //         $porta_num = $porta->porta;
+            //         $historico_porta = new Historicoportas();
+            //         $historico_porta->porta_id = $porta->id;
+            //         $historico_porta->historico_id = $historico->id;
 
-                    $socket = @fsockopen($ip, $porta_num, $errno, $errstr, 5);
-                    if(!$socket || $socket == null){
-                        $historico_porta->status = false;
-                    } else {
-                        $historico_porta->status = true;
-                    }
-                    $historico_porta->save();
-                }
-            }
+            //         $socket = @fsockopen($ip, $porta_num, $errno, $errstr, 5);
+            //         if(!$socket || $socket == null){
+            //             $historico_porta->status = false;
+            //         } else {
+            //             $historico_porta->status = true;
+            //         }
+            //         $historico_porta->save();
+            //     }
+            // }
 
             info($historico);
 

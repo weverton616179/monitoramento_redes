@@ -23,6 +23,9 @@ return new class extends Migration
             $table->integer('tempo_wng');
             $table->integer('tempo_crt');
 
+            // $table->unsignedBigInteger('tempo_id');
+            // $table->foreign('tempo_id')->references('id')->on('tempos');
+
             $table->timestamps();
             $table->softDeletes();
         });

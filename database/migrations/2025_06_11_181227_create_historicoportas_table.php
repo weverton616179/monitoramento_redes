@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->boolean('status');
 
-            $table->unsignedBigInteger('historico_id');
-            $table->foreign('historico_id')->references('id')->on('historicos')->onDelete('cascade');
+            $table->unsignedBigInteger('host_id');
+            $table->foreign('host_id')->references('id')->on('hosts')->onDelete('cascade');
 
             $table->unsignedBigInteger('porta_id');
             $table->foreign('porta_id')->references('id')->on('portas')->onDelete('cascade');

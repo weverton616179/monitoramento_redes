@@ -14,6 +14,10 @@
                     <h2>nome Porta</h2>
                     <input name="nome" id="nome" type="text" value="{{$porta->nome}}" class="border border-gray-600 bg-gray-200">
                 </div>
+                <div class="m-1">
+                    <h2>Tempo entre verificações (minutos)</h2>
+                    <input name="tempo" id="tempo" type="number" value="{{$tempo->tempo}}" class="border border-gray-600 bg-gray-200" required>
+                </div>
             </div>
             <div class="flex justify-between">
                 <div class="m-1">

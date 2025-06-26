@@ -13,6 +13,10 @@
                     <h2>nome Porta</h2>
                     <input class="border border-gray-600 bg-gray-200" name="nome" id="nome" type="text">
                 </div>
+                <div class="m-1">
+                    <h2>Tempo entre verificações (minutos)</h2>
+                    <input name="tempo" id="tempo" type="number" class="border border-gray-600 bg-gray-200" required>
+                </div>
             </div>
             <div class="flex justify-between">
                 <div class="m-1">
@@ -21,7 +25,7 @@
                 </div>
                 <div class="m-1 mx-4">
                     <h2>Monitorando</h2>
-                    <input type="checkbox" name="ativa" id="ativa" >
+                    <input type="checkbox" name="ativa" id="ativa" checked>
                 </div>
             </div>
 

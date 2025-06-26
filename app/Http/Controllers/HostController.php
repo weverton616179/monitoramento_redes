@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Models\Host;
 use App\Models\Porta;
+use App\Models\Tempo;
 use Carbon\Carbon;
 
 class HostController extends Controller
@@ -36,11 +37,12 @@ class HostController extends Controller
     }
 
     public function store(Request $request) {
-        $host = ['nome' => $request->nome, 'ip' => $request->ip, 'ativa' => $request->ativa, 'monitorar' => $request->monitorar, 'perda_wng' => $request->perda_wng, 'perda_crt' => $request->perda_crt, 'tempo_wng' => $request->tempo_wng, 'tempo_crt' => $request->tempo_crt];
+        $host = $request->all();
         $ativa = $request->has('ativa') ? true : false;
         $monitorar = $request->has('monitorar') ? true : false;
         $host['ativa'] = $ativa;
         $host['monitorar'] = $monitorar;
+
         $host_nova = Host::create($host);
 
         $portas_selecionadas = $request->input('portas', []);
@@ -48,21 +50,28 @@ class HostController extends Controller
             $porta = Porta::find($porta_id);
             $host_nova->portas()->attach($porta);
         }
+        if(Tempo::where('tempo', $request->tempo)->first()) {
+            $tempo = Tempo::where('tempo', $request->tempo)->first(); //mudar para find dps
+            $host_nova->tempos()->attach($tempo);
+        } else {
+            $next_run_at = Carbon::now()->addMinutes(intval($request->tempo));
+            $tempo = Tempo::create(['tempo' => $request->tempo, 'next_run_at' => $next_run_at]);
+            $host_nova->tempos()->attach($tempo);
+        }
 
 
         return redirect()->route('site.painel');
     }
 
     public function adicionar(?int $id = null) {
+        $portas = Porta::all();
 
         if($id == null) {
-            $portas = Porta::all();
             return view("site.adicionar", compact('portas'));
         } else {
             $host = Host::find($id);
-            $portas = Porta::all();
-
-            return view("site.editar", compact("host","portas"));
+            $tempo = $host->tempos()->first();   
+            return view("site.editar", compact("host","portas", "tempo"));
         }
         
     }
@@ -87,6 +96,16 @@ class HostController extends Controller
         foreach($portas_selecionadas as $porta_id) {
             $porta = Porta::find($porta_id);
             $host->portas()->attach($porta);
+        }
+
+        $host->tempos()->detach();
+        if(Tempo::where('tempo', $request->tempo)->first()) {
+            $tempo = Tempo::where('tempo', $request->tempo)->first(); //mudar para find dps
+            $host->tempos()->attach($tempo);
+        } else {
+            $next_run_at = Carbon::now()->addMinutes(intval($request->tempo));
+            $tempo = Tempo::create(['tempo' => $request->tempo, 'next_run_at' => $next_run_at]);
+            $host->tempos()->attach($tempo);
         }
 
         return redirect()->route("site.configuracoes");

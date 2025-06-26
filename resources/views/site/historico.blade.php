@@ -49,13 +49,14 @@
             <div id="graficoDois" class="w-[90vw] h-[30vh] m-auto"></div>
         </section>
 
-        <section class="w-[90vw] m-auto py-[30px]">
+        <section class="w-[50vw] m-auto py-[30px]">
+            <h1 class="w-[10vw] font-bold m-auto py-3">Host</h1>
             <div class="flex">
                 <h1 class="w-[10vw] font-bold">Data</h1>
                 <h1 class="w-[10vw] font-bold">Status</h1>
                 <h1 class="w-[10vw] font-bold">Packet Loss (%)</h1>
                 <h1 class="w-[10vw] font-bold">Response Time (ms)</h1>
-                <h1 class="w-[10vw] font-bold">Portas</h1>
+                {{-- <h1 class="w-[10vw] font-bold">Portas</h1> --}}
             </div>
 
             @foreach ($historicos->chunk(20) as $chunk)  
@@ -72,7 +73,7 @@
                         @endif
                         <h1 class="w-[10vw] ">{{$historico->pk_loss}}%</h1>
                         <h1 class="w-[10vw] ">{{$historico->tr_min}}/{{$historico->tr_max}}/{{$historico->tr_med}}ms</h1>
-                        @foreach ($historico->historicoportas as $historicoportas)
+                        {{-- @foreach ($historico->historicoportas as $historicoportas)
                             <div class="mx-2">
                                 <h1>{{$historicoportas->porta->nome}}</h1>
                                 @if ($historicoportas->status)
@@ -81,13 +82,11 @@
                                     <p class="font-semibold text-red-600">PROBLEMA</p>
                                 @endif
                             </div>
-                        @endforeach
+                        @endforeach --}}
                     </div>
                     
                 @endforeach
-            @endforeach
-
-            
+            @endforeach   
         </section>
     </main>
     
