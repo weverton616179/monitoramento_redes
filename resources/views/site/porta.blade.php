@@ -13,10 +13,6 @@
                     <h2>nome Porta</h2>
                     <input class="border border-gray-600 bg-gray-200" name="nome" id="nome" type="text">
                 </div>
-                <div class="m-1">
-                    <h2>Tempo entre verificações (minutos)</h2>
-                    <input name="tempo" id="tempo" type="number" class="border border-gray-600 bg-gray-200" required>
-                </div>
             </div>
             <div class="flex justify-between">
                 <div class="m-1">
@@ -34,6 +30,7 @@
                 <div class="flex py-[1vh] justify-between">
                     <h1 class="font-bold w-[20vw]">Nome host</h1>
                     <h1 class="font-bold w-[10vw]">host</h1>
+                    <h1 class="font-bold w-[20vw]">Tempo entre verificações (minutos)</h1>
                     <h1 class="font-bold w-[10vw]">Atrelar</h1>
                 </div>
                 @foreach($hosts as $host)
@@ -41,7 +38,11 @@
                     <div class="flex py-[1vh] justify-between">
                         <h1 class="w-[20vw]">{{$host->nome}}</h1>
                         <h1 class="w-[10vw]">{{$host->ip}}</h1>
-                        <input class="w-[10vw]" type="checkbox" name="hosts[]" value="{{$host->id}}" id="host_{{$host->id}}">
+                        <div class="w-[20vw] m-1">
+                            <input name="tempos[]" id="tempo_{{$host->id}}" type="number" value="1" class="border border-gray-600 bg-gray-200" required disabled>
+                        </div>
+                        <input class="w-[10vw]" type="checkbox" name="hosts[]" value="{{$host->id}}" id="host_{{$host->id}}" onchange="toggleTimeInput(this)">
+
                     </div>
 
                 @endforeach
@@ -50,5 +51,18 @@
             <button class="bg-green-500 active:bg-green-700">Salvar</button>
         </form>
     </div>
+    <script>
+        function toggleTimeInput(checkbox) {
+            const hostId = checkbox.id.split('_')[1];
+            const timeInput = document.getElementById('tempo_' + hostId);
+            if(checkbox.checked == true) {
+                timeInput.disabled = false;
+            } else {
+                timeInput.disabled = true;
+            }
+            // timeInput.disabled = !checkbox.checked;
+        }
+    </script>
+
 
 @endsection

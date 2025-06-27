@@ -15,7 +15,6 @@ class Porta extends Model
         'nome',
         'ativa',
         'porta',
-        'tempo_id',
     ];
 
     public function host()
@@ -25,9 +24,5 @@ class Porta extends Model
 
     public function historicoportas() {
         return $this->hasMany(Historicoportas::class)->orderBy('created_at', 'desc');
-    }
-
-    public function tempos() {
-        return $this->belongsToMany(Tempo::class, 'porta_tempo');
     }
 }

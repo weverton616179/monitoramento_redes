@@ -15,7 +15,7 @@
                 </div>
                 <div class="m-1">
                     <h2>Tempo entre verificações (minutos)</h2>
-                    <input name="tempo" id="tempo" type="number" class="border border-gray-600 bg-gray-200" required>
+                    <input name="tempo" id="tempo" type="number" class="border border-gray-600 bg-gray-200" required value="1">
                 </div>
                 
             </div>
@@ -58,6 +58,7 @@
                 <div class="flex py-[1vh] justify-between">
                     <h1 class="font-bold w-[10vw]">Nome porta</h1>
                     <h1 class="font-bold w-[10vw]">Porta</h1>
+                    <h1 class="font-bold w-[20vw]">Tempo entre verificações (minutos)</h1>
                     <h1 class="font-bold w-[10vw]">Seleção</h1>
                 </div>
                 @foreach($portas as $porta)
@@ -65,7 +66,10 @@
                     <div class="flex py-[1vh] justify-between">
                         <h1 class="w-[10vw]">{{$porta->nome}}</h1>
                         <h1 class="w-[10vw]">{{$porta->porta}}</h1>
-                        <input class="w-[10vw]" type="checkbox" name="portas[]" value="{{$porta->id}}" id="porta_{{$porta->id}}">
+                        <div class="w-[20vw] m-1">
+                            <input name="tempos[]" id="tempo_{{$porta->id}}" type="number" value="1" class="border border-gray-600 bg-gray-200" required disabled>
+                        </div>
+                        <input class="w-[10vw]" type="checkbox" name="portas[]" value="{{$porta->id}}" id="porta_{{$porta->id}}" onchange="toggleTimeInput(this)">
                     </div>
 
                 @endforeach
@@ -74,5 +78,17 @@
             <button class="bg-green-500 active:bg-green-700">Salvar</button>
         </form>
     </div>
+    <script>
+        function toggleTimeInput(checkbox) {
+            const portaId = checkbox.id.split('_')[1];
+            const timeInput = document.getElementById('tempo_' + portaId);
+            if(checkbox.checked == true) {
+                timeInput.disabled = false;
+            } else {
+                timeInput.disabled = true;
+            }
+            // timeInput.disabled = !checkbox.checked;
+        }
+    </script>
 
 @endsection

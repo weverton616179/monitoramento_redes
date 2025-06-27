@@ -24,6 +24,7 @@ class Host extends Model
         'tempo_wng',
         'tempo_crt',
         'tempo_id',
+        'tempo',
     ];
 
     public function users()
@@ -44,7 +45,7 @@ class Host extends Model
         return $this->belongsToMany(Porta::class, 'host_porta');
     }
 
-    public function tempos() {
-        return $this->belongsToMany(Tempo::class, 'host_tempo');
+    public function historicoportas() {
+        return $this->hasMany(Historicoportas::class)->orderBy('created_at', 'desc');
     }
 }

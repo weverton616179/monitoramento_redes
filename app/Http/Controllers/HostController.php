@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \App\Models\Host;
 use App\Models\Porta;
-use App\Models\Tempo;
 use Carbon\Carbon;
 
 class HostController extends Controller
@@ -33,7 +32,16 @@ class HostController extends Controller
             return $host->monitorar && $host->historicos->first() && $host->historicos->first()->status == 'PROBLEMA';
         });
 
-        return view("site.painel", compact("hosts_at", "hosts_pr", "hosts_nm", "hosts_sh", "hosts_wng"));
+        $abc = [];
+        $host = $hosts->first();
+        foreach ($host->portas as $porta) {
+            foreach ($porta->pivot as $pivot) {
+                $abc[] = $pivot;
+            }
+            // $abc[] = $porta->pivot->first()->id;
+        }
+        
+        return view("site.painel", compact("hosts_at", "hosts_pr", "hosts_nm", "hosts_sh", "hosts_wng", "abc"));
     }
 
     public function store(Request $request) {
@@ -46,18 +54,28 @@ class HostController extends Controller
         $host_nova = Host::create($host);
 
         $portas_selecionadas = $request->input('portas', []);
-        foreach($portas_selecionadas as $porta_id) {
-            $porta = Porta::find($porta_id);
-            $host_nova->portas()->attach($porta);
+        $tempos = $request->input('tempos', []);
+
+        $tamanho = count($portas_selecionadas);
+        for($i = 0; $i < $tamanho; $i++) {
+            $porta = Porta::find($portas_selecionadas[$i]);
+            $tempo = $tempos[$i];
+            $host_nova->portas()->attach($porta, ['tempo'=> $tempo]);
+
         }
-        if(Tempo::where('tempo', $request->tempo)->first()) {
-            $tempo = Tempo::where('tempo', $request->tempo)->first(); //mudar para find dps
-            $host_nova->tempos()->attach($tempo);
-        } else {
-            $next_run_at = Carbon::now()->addMinutes(intval($request->tempo));
-            $tempo = Tempo::create(['tempo' => $request->tempo, 'next_run_at' => $next_run_at]);
-            $host_nova->tempos()->attach($tempo);
-        }
+
+        // foreach($portas_selecionadas as $porta_id) {
+        //     $porta = Porta::find($porta_id);
+        //     $host_nova->portas()->attach($porta);
+        // }
+        // if(Tempo::where('tempo', $request->tempo)->first()) {
+        //     $tempo = Tempo::where('tempo', $request->tempo)->first(); //mudar para find dps
+        //     $host_nova->tempos()->attach($tempo);
+        // } else {
+        //     $next_run_at = Carbon::now()->addMinutes(intval($request->tempo));
+        //     $tempo = Tempo::create(['tempo' => $request->tempo, 'next_run_at' => $next_run_at]);
+        //     $host_nova->tempos()->attach($tempo);
+        // }
 
 
         return redirect()->route('site.painel');
@@ -70,8 +88,7 @@ class HostController extends Controller
             return view("site.adicionar", compact('portas'));
         } else {
             $host = Host::find($id);
-            $tempo = $host->tempos()->first();   
-            return view("site.editar", compact("host","portas", "tempo"));
+            return view("site.editar", compact("host","portas"));
         }
         
     }
@@ -93,20 +110,31 @@ class HostController extends Controller
 
         $host->portas()->detach();
         $portas_selecionadas = $request->input('portas', []);
-        foreach($portas_selecionadas as $porta_id) {
-            $porta = Porta::find($porta_id);
-            $host->portas()->attach($porta);
+        $tempos = $request->input('tempos', []);
+
+        $tamanho = count($portas_selecionadas);
+        for($i = 0; $i < $tamanho; $i++) {
+            $porta = Porta::find($portas_selecionadas[$i]);
+            $tempo = $tempos[$i];
+            $host->portas()->attach($porta, ['tempo'=> $tempo]);
+
         }
 
-        $host->tempos()->detach();
-        if(Tempo::where('tempo', $request->tempo)->first()) {
-            $tempo = Tempo::where('tempo', $request->tempo)->first(); //mudar para find dps
-            $host->tempos()->attach($tempo);
-        } else {
-            $next_run_at = Carbon::now()->addMinutes(intval($request->tempo));
-            $tempo = Tempo::create(['tempo' => $request->tempo, 'next_run_at' => $next_run_at]);
-            $host->tempos()->attach($tempo);
-        }
+
+        // foreach($portas_selecionadas as $porta_id) {
+        //     $porta = Porta::find($porta_id);
+        //     $host->portas()->attach($porta);
+        // }
+
+        // $host->tempos()->detach();
+        // if(Tempo::where('tempo', $request->tempo)->first()) {
+        //     $tempo = Tempo::where('tempo', $request->tempo)->first(); //mudar para find dps
+        //     $host->tempos()->attach($tempo);
+        // } else {
+        //     $next_run_at = Carbon::now()->addMinutes(intval($request->tempo));
+        //     $tempo = Tempo::create(['tempo' => $request->tempo, 'next_run_at' => $next_run_at]);
+        //     $host->tempos()->attach($tempo);
+        // }
 
         return redirect()->route("site.configuracoes");
     }

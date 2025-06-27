@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Host;
 use App\Models\Porta;
-use App\Models\Tempo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -23,19 +22,29 @@ class PortaController extends Controller
         $porta_n = Porta::create($porta);
 
         $hosts_selecionadas = $request->input('hosts', []);
-        foreach($hosts_selecionadas as $host_id) {
-            $host = Host::find($host_id);
-            $porta_n->host()->attach($host);
+        $tempos = $request->input('tempos', []);
+
+        $tamanho = count($hosts_selecionadas);
+        for($i = 0; $i < $tamanho; $i++) {
+            $host = Host::find($hosts_selecionadas[$i]);
+            $tempo = $tempos[$i];
+            $porta_n->host()->attach($host, ['tempo'=> $tempo]);
+
         }
 
-        if(Tempo::where('tempo', $request->tempo)->first()) {
-            $tempo = Tempo::where('tempo', $request->tempo)->first(); //mudar para find dps
-            $porta_n->tempos()->attach($tempo);
-        } else {
-            $next_run_at = Carbon::now()->addMinutes(intval($request->tempo));
-            $tempo = Tempo::create(['tempo' => $request->tempo, 'next_run_at' => $next_run_at]);
-            $porta_n->tempos()->attach($tempo);
-        }
+        // foreach($hosts_selecionadas as $host_id) {
+        //     $host = Host::find($host_id);
+        //     $porta_n->host()->attach($host);
+        // }
+
+        // if(Tempo::where('tempo', $request->tempo)->first()) {
+        //     $tempo = Tempo::where('tempo', $request->tempo)->first(); //mudar para find dps
+        //     $porta_n->tempos()->attach($tempo);
+        // } else {
+        //     $next_run_at = Carbon::now()->addMinutes(intval($request->tempo));
+        //     $tempo = Tempo::create(['tempo' => $request->tempo, 'next_run_at' => $next_run_at]);
+        //     $porta_n->tempos()->attach($tempo);
+        // }
         
         return redirect()->route('site.painel');
     }
@@ -55,20 +64,32 @@ class PortaController extends Controller
 
         $porta->host()->detach();
         $hosts_selecionadas = $request->input('hosts', []);
-        foreach($hosts_selecionadas as $host_id) {
-            $host = Host::find($host_id);
-            $porta->host()->attach($host);
+        $tempos = $request->input('tempos', []);
+
+        $tamanho = count($hosts_selecionadas);
+        for($i = 0; $i < $tamanho; $i++) {
+            $host = Host::find($hosts_selecionadas[$i]);
+            $tempo = $tempos[$i];
+            $porta->host()->attach($host, ['tempo'=> $tempo]);
+
         }
 
-        $porta->tempos()->detach();
-        if(Tempo::where('tempo', $request->tempo)->first()) {
-            $tempo = Tempo::where('tempo', $request->tempo)->first(); //mudar para find dps
-            $porta->tempos()->attach($tempo);
-        } else {
-            $next_run_at = Carbon::now()->addMinutes(intval($request->tempo));
-            $tempo = Tempo::create(['tempo' => $request->tempo, 'next_run_at' => $next_run_at]);
-            $porta->tempos()->attach($tempo);
-        }
+        // $porta->host()->detach();
+        // $hosts_selecionadas = $request->input('hosts', []);
+        // foreach($hosts_selecionadas as $host_id) {
+        //     $host = Host::find($host_id);
+        //     $porta->host()->attach($host);
+        // }
+
+        // $porta->tempos()->detach();
+        // if(Tempo::where('tempo', $request->tempo)->first()) {
+        //     $tempo = Tempo::where('tempo', $request->tempo)->first(); //mudar para find dps
+        //     $porta->tempos()->attach($tempo);
+        // } else {
+        //     $next_run_at = Carbon::now()->addMinutes(intval($request->tempo));
+        //     $tempo = Tempo::create(['tempo' => $request->tempo, 'next_run_at' => $next_run_at]);
+        //     $porta->tempos()->attach($tempo);
+        // }
 
 
         return redirect()->route("site.configuracoes");
@@ -77,7 +98,7 @@ class PortaController extends Controller
     public function editar_porta($id) {
         $hosts = Host::all();
         $porta = Porta::find($id);
-        $tempo = $porta->tempos()->first();
-        return view("site.editar_porta", compact("porta", "hosts", "tempo"));
+        // $tempo = $porta->tempos()->first();
+        return view("site.editar_porta", compact("porta", "hosts"));
     }
 }

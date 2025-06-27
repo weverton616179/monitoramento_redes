@@ -24,6 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('host_porta', function (Blueprint $table) {
@@ -33,27 +34,11 @@ return new class extends Migration
 
             $table->unsignedBigInteger('porta_id');
             $table->foreign('porta_id')->references('id')->on('portas')->onDelete('cascade');
+
+            $table->integer('tempo');
+            
             $table->timestamps();
-        });
-
-        Schema::create('host_tempo', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('host_id');
-            $table->foreign('host_id')->references('id')->on('hosts')->onDelete('cascade');
-
-            $table->unsignedBigInteger('tempo_id');
-            $table->foreign('tempo_id')->references('id')->on('tempos')->onDelete('cascade');
-            $table->timestamps();
-        });
-
-        Schema::create('porta_tempo', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('porta_id');
-            $table->foreign('porta_id')->references('id')->on('portas')->onDelete('cascade');
-
-            $table->unsignedBigInteger('tempo_id');
-            $table->foreign('tempo_id')->references('id')->on('tempos')->onDelete('cascade');
-            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -65,7 +50,5 @@ return new class extends Migration
         // Schema::dropIfExists('roles');
         Schema::dropIfExists('user_host');
         Schema::dropIfExists('host_porta');
-        Schema::dropIfExists('host_tempo');
-        Schema::dropIfExists('porta_tempo');
     }
 };

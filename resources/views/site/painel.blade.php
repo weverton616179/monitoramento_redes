@@ -1,7 +1,10 @@
 @extends('site.layout')
 @section('titulo', 'Painel')
 @section('conteudo')
-
+    @foreach ($abc as $item)
+        <h1>{{$item}}</h1>
+    @endforeach
+    
     <header class="flex justify-between	items-center m-2">
 
         <div class="flex">
@@ -74,7 +77,7 @@
                     </div>
                 </li>
             @endforeach
-            </ul>
+        </ul>
         
         <ul id="sectionProblemas" class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xlg:grid-cols-4 gap-2 mb-2">
             @foreach ($hosts_pr as $host)
@@ -143,7 +146,7 @@
                     </div>
                 </li>
             @endforeach
-            </ul>
+        </ul>
       
         <ul id="sectionWarning" class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xlg:grid-cols-4 gap-2 mb-2">
             @foreach ($hosts_wng as $host)
@@ -211,7 +214,7 @@
                     </div>  
                 </li>
             @endforeach
-            </ul>
+        </ul>
 
         <ul id="sectionAtivos" class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xlg:grid-cols-4 gap-2 mb-2">
             @foreach ($hosts_at as $host)
@@ -279,7 +282,7 @@
                     </div>  
                 </li>
             @endforeach
-            </ul>
+        </ul>
         
         <ul id="sectionSh" class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xlg:grid-cols-4 gap-2 mb-2">
             @foreach ($hosts_sh as $host)

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 use App\Jobs\PingHost;
+use App\Models\Porta;
 use App\Models\Tempo;
 use Carbon\Carbon;
 
@@ -17,29 +18,43 @@ Artisan::command('inspire', function () {
 
 
 Schedule::call(function () {
-    $tempos = Tempo::all();
-    foreach ($tempos as $tempo) {
-        $dataEhora = Carbon::parse($tempo->next_run_at);
-        if ($dataEhora->isPast()) {
-            $hosts = $tempo->hosts;
-            $portas = $tempo->portas;
-            $tempo->next_run_at = Carbon::now()->addMinutes(intval($tempo->tempo));
-            $tempo->save();
-            if ($hosts->count() > 0) {
-                foreach ($hosts as $host) {PingHost::dispatch($host);}
-                
-            } 
-            if ($portas->count() > 0) {
-                foreach ($portas as $porta) {ForsokenPorta::dispatch($porta);}
+
+    $hosts = Host::all();
+    $portas = Porta::all();
+    foreach ($hosts as $host) {
+        $tempo_host = $host->tempo;
+        $historico_host = $host->historicos->first();       
+
+        if ($historico_host == null) {
+            PingHost::dispatch($host);
+        } else {
+            $now = Carbon::now();
+            $data = $historico_host->created_at;
+            $diff = $data->diffInMinutes($now);
+            if ($diff >= $tempo_host) {
+                PingHost::dispatch($host);
             }
-            if($hosts->count() <= 0 && $portas->count() <= 0) {
-                $tempo->delete();
+        }
+
+        foreach($host->portas as $porta) {
+
+        }
+    }
+
+    foreach($portas as $porta) {
+        $pivot = $porta->host->pivot->where('host_id', $host->id)->first();
+        $tempo_porta = $pivot->tempo;
+        $historico_porta = $porta->historicos->where('host_id', $host->id)->first();
+
+        if ($historico_porta == null) {
+            ForsokenPorta::dispatch($porta, $host);
+        } else {
+            $now = Carbon::now();
+            $data = $historico_porta->created_at;
+            $diff = $data->diffInMinutes($now);
+            if ($diff >= $tempo_porta) {
+                ForsokenPorta::dispatch($porta, $host);
             }
-            
-            //else {
-            //     $tempo->delete();
-            // }
-            
         }
     }
 })->everyTenSeconds();

@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->boolean('status');
 
-            $table->unsignedBigInteger('host_id');
-            $table->foreign('host_id')->references('id')->on('hosts')->onDelete('cascade');
-
             $table->unsignedBigInteger('porta_id');
             $table->foreign('porta_id')->references('id')->on('portas')->onDelete('cascade');
+            $table->unsignedBigInteger('host_id');
+            $table->foreign('host_id')->references('id')->on('hosts')->onDelete('cascade');
 
             $table->timestamps();
             $table->softDeletes();

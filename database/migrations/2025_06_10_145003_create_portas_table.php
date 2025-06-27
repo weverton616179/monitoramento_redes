@@ -17,9 +17,6 @@ return new class extends Migration
             $table->string('porta');
             $table->boolean('ativa');
 
-            // $table->unsignedBigInteger('tempo_id');
-            // $table->foreign('tempo_id')->references('id')->on('tempos');
-            
             $table->timestamps();
             $table->softDeletes();
         });
