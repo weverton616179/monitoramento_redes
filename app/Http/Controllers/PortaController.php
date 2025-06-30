@@ -51,6 +51,7 @@ class PortaController extends Controller
 
     public function destroy($id) {
         $porta = Porta::find($id);
+        $porta->host()->detach();
         $porta->delete();
         return redirect()->route("site.configuracoes");
     }

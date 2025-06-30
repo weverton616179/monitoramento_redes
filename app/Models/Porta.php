@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Askedio\SoftCascade\Traits\SoftCascadeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,8 +10,9 @@ use Illuminate\Notifications\Notifiable;
 
 class Porta extends Model
 {
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, SoftCascadeTrait;
 
+    protected $softCascade = ['historicoportas'];
     protected $fillable = [
         'nome',
         'ativa',
@@ -19,7 +21,7 @@ class Porta extends Model
 
     public function host()
     {
-        return $this->belongsToMany(Host::class, 'host_porta');
+        return $this->belongsToMany(Host::class, 'host_porta')->withPivot('tempo');
     }
 
     public function historicoportas() {

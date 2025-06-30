@@ -1,10 +1,6 @@
 @extends('site.layout')
 @section('titulo', 'Painel')
 @section('conteudo')
-    @foreach ($abc as $item)
-        <h1>{{$item}}</h1>
-    @endforeach
-    
     <header class="flex justify-between	items-center m-2">
 
         <div class="flex">
@@ -97,32 +93,24 @@
                         <h1 class="font-semibold">PORTAS</h1>
                         <div class="flex">
                             @foreach ($host->portas as $porta)
-                                
-                                <?php $hporta = $porta->historicoportas->where('historico_id', $historico->id)->first();
-                                    if($hporta == null) {
-                                        $aa = $host->historicos->skip(1)->first();
-                                        if($aa != null){
-                                            $hporta = $porta->historicoportas->where('historico_id', $aa->id)->first();
-                                        } 
-                                    }
-                                ?>
+                                <?php $hporta = $porta->historicoportas->where('host_id', $host->id)->first();?>
 
                                 @if ($porta->ativa)
 
                                     @if ($hporta != null && $hporta->status)
-                                        <div class="bg-green-500 m-1">
+                                        <div class="bg-green-500 m-1 w-[80px] text-center">
                                             <a class="font-semibold" href="#">{{$porta->nome}}</a>
                                             <p class="center">{{$porta->porta}}</p>
-                                            <p class="center">ATIAVA</p>
+                                            <p class="center">ATIVA</p>
                                         </div>
                                     @elseif ($hporta != null && !$hporta->status)
-                                        <div class="bg-red-500 m-1">
+                                        <div class="bg-red-500 m-1 w-[80px] text-center">
                                             <a class="font-semibold" href="#">{{$porta->nome}}</a>
                                             <p class="center">{{$porta->porta}}</p>
                                             <p class="center">PROBLEMA</p>
                                         </div>
                                     @else
-                                        <div class="bg-gray-500 m-1">
+                                        <div class="bg-gray-500 m-1 w-[80px] text-center">
                                             <a class="font-semibold" href="#">{{$porta->nome}}</a>
                                             <p class="center">{{$porta->porta}}</p>
                                             <p class="center">S/HISTORICO</p>
@@ -167,31 +155,24 @@
                         <h1 class="font-semibold">PORTAS</h1>
                         <div class="flex">
                             @foreach ($host->portas as $porta)
-                                <?php $hporta = $porta->historicoportas->where('historico_id', $historico->id)->first();
-                                    if($hporta == null) {
-                                        $aa = $host->historicos->skip(1)->first();
-                                        if($aa != null){
-                                            $hporta = $porta->historicoportas->where('historico_id', $aa->id)->first();
-                                        } 
-                                    }
-                                ?>
+                                <?php $hporta = $porta->historicoportas->where('host_id', $host->id)->first();?>
 
                                 @if ($porta->ativa)
 
                                     @if ($hporta != null && $hporta->status)
-                                        <div class="bg-green-500 m-1">
+                                        <div class="bg-green-500 m-1 w-[80px] text-center">
                                             <a class="font-semibold" href="#">{{$porta->nome}}</a>
                                             <p class="center">{{$porta->porta}}</p>
                                             <p class="center">ATIVA</p>
                                         </div>
                                     @elseif ($hporta != null && !$hporta->status)
-                                        <div class="bg-red-500 m-1">
+                                        <div class="bg-red-500 m-1 w-[80px] text-center">
                                             <a class="font-semibold" href="#">{{$porta->nome}}</a>
                                             <p class="center">{{$porta->porta}}</p>
                                             <p class="center">PROBLEMA</p>
                                         </div>
                                     @else
-                                        <div class="bg-gray-400 m-1">
+                                        <div class="bg-gray-400 m-1 w-[80px] text-center">
                                             <a class="font-semibold" href="#">{{$porta->nome}}</a>
                                             <p class="center">{{$porta->porta}}</p>
                                             <p class="center">S/HISTORICO</p>
@@ -218,9 +199,7 @@
 
         <ul id="sectionAtivos" class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xlg:grid-cols-4 gap-2 mb-2">
             @foreach ($hosts_at as $host)
-                <?php
-                $historico = $host->historicos->first();
-                ?>
+                <?php $historico = $host->historicos->first(); ?>
                 <li class="problems rounded-md bg-green-300">
                     <div class="nome text-center bg-green-400">
                         <h2 class="text-lg font-semibold">{{$host->nome}}</h2>
@@ -235,31 +214,23 @@
                         <h1 class="font-semibold">PORTAS</h1>
                         <div class="flex">
                             @foreach ($host->portas as $porta)
-                                <?php $hporta = $porta->historicoportas->where('historico_id', $historico->id)->first();
-                                    if($hporta == null) {
-                                        $aa = $host->historicos->skip(1)->first();
-                                        if($aa != null){
-                                            $hporta = $porta->historicoportas->where('historico_id', $aa->id)->first();
-                                        } 
-                                    }
-                                ?>
-
+                                <?php $hporta = $porta->historicoportas->where('host_id', $host->id)->first();?>
                                 @if ($porta->ativa)
 
                                     @if ($hporta != null && $hporta->status)
-                                        <div class="bg-green-500 m-1">
-                                            <a class="font-semibold" href="#">{{$porta->nome}}</a>
+                                        <div class="bg-green-500 m-1 w-[80px] text-center">
+                                            <a class="font-semibold " href="#">{{$porta->nome}}</a>
                                             <p class="center">{{$porta->porta}}</p>
                                             <p class="center">ATIVA</p>
                                         </div>
                                     @elseif ($hporta != null && !$hporta->status)
-                                        <div class="bg-red-500 m-1">
+                                        <div class="bg-red-500 m-1 w-[80px] text-center">
                                             <a class="font-semibold" href="#">{{$porta->nome}}</a>
                                             <p class="center">{{$porta->porta}}</p>
                                             <p class="center">PROBLEMA</p>
                                         </div>
                                     @else
-                                        <div class="bg-gray-400 m-1">
+                                        <div class="bg-gray-400 m-1 w-[80px] text-center">
                                             <a class="font-semibold" href="#">{{$porta->nome}}</a>
                                             <p class="center">{{$porta->porta}}</p>
                                             <p class="center">S/HISTORICO</p>

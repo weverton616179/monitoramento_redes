@@ -11,7 +11,7 @@ use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 class Historico extends Model
 {
     use HasFactory, Notifiable, SoftDeletes, SoftCascadeTrait;
-    protected $softCascade = ['historicoportas'];
+    // protected $softCascade = ['historicoportas'];
 
     public function host()
     {

@@ -46,7 +46,7 @@
                         
                         @if ($porta->host()->where('hosts.id', $host->id)->exists())
                             <div class="w-[20vw] m-1">
-                                <input name="tempos[]" id="tempo_{{$host->id}}" type="number" value="{{$porta->host->find($host->id)->pivot->where('host_id', $host->id)->first()->tempo}}" class="border border-gray-600 bg-gray-200" required>
+                                <input name="tempos[]" id="tempo_{{$host->id}}" type="number" value="{{$porta->host->find($host->id)->pivot->tempo}}" class="border border-gray-600 bg-gray-200" required>
                             </div>
                             <input class="w-[10vw]" type="checkbox" name="hosts[]" value="{{$host->id}}" id="host_{{$host->id}}" checked onchange="toggleTimeInput(this)">
                         @else

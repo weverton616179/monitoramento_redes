@@ -6,7 +6,7 @@ use App\Models\Historicoportas;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
-class ForsokenPorta implements ShouldQueue
+class FsockopenPorta implements ShouldQueue
 {
     use Queueable;
 

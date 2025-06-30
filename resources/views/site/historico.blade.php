@@ -48,48 +48,104 @@
             <h1 class="font-bold w-[50vw] m-auto text-center">Perda de pacote (%)</h1>
             <div id="graficoDois" class="w-[90vw] h-[30vh] m-auto"></div>
         </section>
+        
+        @foreach ($portas as $porta)
+            <section class="my-[40px] h-[30vh]">
+                <h1 class="font-bold w-[50vw] m-auto text-center">grafico {{$porta->nome}}</h1>
+                <div class="w-[90vw] h-[8vh] m-auto">
+                    <div id="grafico_{{$porta->id}}"></div>
+                </div>
+            </section>
+        @endforeach
 
-        <section class="w-[50vw] m-auto py-[30px]">
-            <h1 class="w-[10vw] font-bold m-auto py-3">Host</h1>
-            <div class="flex">
-                <h1 class="w-[10vw] font-bold">Data</h1>
-                <h1 class="w-[10vw] font-bold">Status</h1>
-                <h1 class="w-[10vw] font-bold">Packet Loss (%)</h1>
-                <h1 class="w-[10vw] font-bold">Response Time (ms)</h1>
-                {{-- <h1 class="w-[10vw] font-bold">Portas</h1> --}}
+        <section class="flex mx-5 justify-between">
+            <div class="w-[60vw] py-[30px]">
+                <h1 class="w-[10vw] font-bold m-auto py-3">Host</h1>
+                <div class="flex">
+                    <h1 class="w-[15vw] font-bold">Data</h1>
+                    <h1 class="w-[15vw] font-bold">Status</h1>
+                    <h1 class="w-[15vw] font-bold">Packet Loss (%)</h1>
+                    <h1 class="w-[15vw] font-bold">Response Time (ms)</h1>
+                </div>
+
+                @foreach ($historicos->chunk(20) as $chunk)  
+                    @foreach ($chunk as $historico)
+
+                        <div class="flex my-3">
+                            <h1 class="w-[15vw] ">{{$historico->updated_at}}</h1>
+                            @if ($historico->status == "ATIVO")
+                                <h1 class="w-[15vw] font-semibold text-green-600">ATIVO</h1>
+                            @elseif ($historico->status == "PROBLEMA")
+                                <h1 class="w-[15vw] font-semibold text-red-600">PROBLEMA</h1>
+                            @elseif ($historico->status == "WARNING")
+                                <h1 class="w-[15vw] font-semibold text-yellow-600">WARNING</h1>
+                            @endif
+                            <h1 class="w-[15vw] ">{{$historico->pk_loss}}%</h1>
+                            <h1 class="w-[15vw] ">{{$historico->tr_min}}/{{$historico->tr_max}}/{{$historico->tr_med}}ms</h1>
+                        </div>
+                        
+                    @endforeach
+                @endforeach   
             </div>
 
-            @foreach ($historicos->chunk(20) as $chunk)  
-                @foreach ($chunk as $historico)
-
-                    <div class="flex my-3">
-                        <h1 class="w-[10vw] ">{{$historico->updated_at}}</h1>
-                        @if ($historico->status == "ATIVO")
-                            <h1 class="w-[10vw] font-semibold text-green-600">ATIVO</h1>
-                        @elseif ($historico->status == "PROBLEMA")
-                            <h1 class="w-[10vw] font-semibold text-red-600">PROBLEMA</h1>
-                        @elseif ($historico->status == "WARNING")
-                            <h1 class="w-[10vw] font-semibold text-yellow-600">WARNING</h1>
+            <div class="w-[30vw]">
+                <h1 class="w-[10vw] font-bold m-auto py-3">Portas</h1>
+                <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-evenly">
+                    @foreach ($portas as $porta)
+                        <?php $historicoportas = $porta->historicoportas->where('host_id', $host->id)->first() ?>
+                        @if ($historicoportas->status == 1)
+                            <button class="w-[80px] h-[80px] bg-green-300 flex items-center justify-center hover:bg-green-400 relative " onclick="ver(this)">
+                                
+                        @else
+                            <button class="w-[80px] h-[80px] flex items-center justify-center bg-red-300 hover:bg-red-400 relative " onclick="ver(this)">
+                            
                         @endif
-                        <h1 class="w-[10vw] ">{{$historico->pk_loss}}%</h1>
-                        <h1 class="w-[10vw] ">{{$historico->tr_min}}/{{$historico->tr_max}}/{{$historico->tr_med}}ms</h1>
-                        {{-- @foreach ($historico->historicoportas as $historicoportas)
-                            <div class="mx-2">
-                                <h1>{{$historicoportas->porta->nome}}</h1>
-                                @if ($historicoportas->status)
-                                    <p class="font-semibold text-green-600">ATIVO</p>
-                                @else
-                                    <p class="font-semibold text-red-600">PROBLEMA</p>
-                                @endif
+                                <h1 class="font-semibold">{{$porta->nome}}</h1>
+                                <div class="hidden absolute bottom-[70px] left-[-50%] bg-gray-300">
+                                    <h1 class="w-[10vw]">{{$historicoportas->created_at}}</h1>
+                                    @if ($historicoportas->status == 1)
+                                        <h1 class="w-[5vw] font-semibold text-green-600">ATIVA</h1>
+                                    @else
+                                        <h1 class="w-[5vw] font-semibold text-red-600">PROBLEMA</h1>
+                                    @endif
+                                </div>
+                            </button>
+                        
+                        {{-- <div>
+                            <h1 class="w-[5vw] font-bold m-auto py-3">{{$porta->nome}}</h1>
+                            <div class="flex">
+                                <h1 class="w-[10vw] font-bold m-auto py-3">Data</h1>
+                                <h1 class="w-[5vw] font-bold m-auto py-3">Status</h1>
                             </div>
-                        @endforeach --}}
-                    </div>
-                    
-                @endforeach
-            @endforeach   
+                            @foreach ($porta->historicoportas->where('host_id', $host->id) as $historicoportas)
+                                <div class="flex">
+                                    <h1 class="w-[10vw]">{{$historicoportas->created_at}}</h1>
+                                    @if ($historicoportas->status == 1)
+                                        <h1 class="w-[5vw] font-semibold text-green-600">ATIVA</h1>
+                                    @else
+                                        <h1 class="w-[5vw] font-semibold text-red-600">PROBLEMA</h1>
+                                    @endif
+                                    
+                                </div>
+                            @endforeach
+                        </div> --}}
+                    @endforeach
+                </div>
+            </div>
+            
         </section>
+        
     </main>
     
+    <script>
+        function ver(botao) {
+            const div = botao.getElementsByTagName('div');
+            if(div.style.dispay == 'none') {
+                div.style.display = "block";
+            }
+        }
+    </script>
+
     <script>
         var historicos = @json($historicosAsc);
 
@@ -216,8 +272,72 @@
         chartDois.render();
         chartTres.render();
     </script>
-    
-    
-    
+
+    @foreach ($portas as $porta)
+        <script>
+            var host = @json($host);
+            var porta = @json($porta->with('historicoportas')->find($porta->id));
+            
+            var estatus = [];
+            porta.historicoportas.forEach(historico => {
+                if(historico.host_id == host.id) {
+                    estatus.push(historico.status + 1);
+                }
+
+            });
+
+            var options = {
+            series: [{
+                name: "Desktops",
+                data: estatus.map((status, index) => {
+                    return {
+                        x: index + 1, // ou seus rótulos
+                        y: status,
+                        fillColor: status === 2 ? '#00ee00' : 
+                            status === 1 ? '#ff0000' : '#cccccc'
+                    };
+                })
+            }],
+            chart: {
+                width: '100%',
+                height: '100%',
+                type: 'bar',
+                stacked: true,
+                stackType: "100%",
+                sparkline: {
+                    enabled: true
+                }
+            
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '100%',
+                    horizontal: false,
+                }, 
+            },
+            dataLabels: {
+                enabled: false
+            },
+            states: {
+                hover: {
+                    filter: {
+                        type: 'none' // Remove efeito hover
+                    }
+                },
+                active: {
+                    filter: {
+                        type: 'none' // Remove efeito de clique
+                    }
+                }
+            },
+            tooltip: {
+                enabled: false
+            }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#grafico_" + porta.id), options);
+            chart.render();
+        </script>
+    @endforeach 
 
 @endsection

@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 class Host extends Model
 {
     use HasFactory, Notifiable, SoftDeletes, SoftCascadeTrait;
-    protected $softCascade = ['historicos'];
+    protected $softCascade = ['historicos', 'historicoportas'];
 
     protected $fillable = [
         'nome',
@@ -23,7 +23,6 @@ class Host extends Model
         'perda_crt',
         'tempo_wng',
         'tempo_crt',
-        'tempo_id',
         'tempo',
     ];
 
@@ -42,7 +41,7 @@ class Host extends Model
     }
 
     public function portas() {
-        return $this->belongsToMany(Porta::class, 'host_porta');
+        return $this->belongsToMany(Porta::class, 'host_porta')->withPivot('tempo');
     }
 
     public function historicoportas() {

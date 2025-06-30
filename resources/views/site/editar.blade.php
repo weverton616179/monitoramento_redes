@@ -14,6 +14,10 @@
                     <h2>Nome</h2>
                     <input name="nome" id="nome" type="text" value="{{$host->nome}}" class="border border-gray-600 bg-gray-200" required>
                 </div>
+                <div class="m-1">
+                    <h2>Tempo entre verificações (minutos)</h2>
+                    <input name="tempo" id="tempo" type="number" value="{{$host->tempo}}" class="border border-gray-600 bg-gray-200" required value="1">
+                </div>
             </div>
             <div class="flex justify-between">
                 <div class="m-1">
@@ -72,7 +76,7 @@
                         <h1 class="w-[10vw]">{{$porta->porta}}</h1>
                         @if ($host->portas()->where('portas.id', $porta->id)->exists())
                             <div class="w-[20vw] m-1">
-                                <input name="tempos[]" id="tempo_{{$porta->id}}" type="number" value="{{$host->portas->find($porta->id)->pivot->where('porta_id', $porta->id)->first()->tempo}}" class="border border-gray-600 bg-gray-200" required>
+                                <input name="tempos[]" id="tempo_{{$porta->id}}" type="number" value="{{$host->portas->find($porta->id)->pivot->tempo}}" class="border border-gray-600 bg-gray-200" required>
                             </div>
                             <input class="w-[10vw]" type="checkbox" name="portas[]" value="{{$porta->id}}" id="porta_{{$porta->id}}" checked onchange="toggleTimeInput(this)">
                         @else
